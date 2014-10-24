@@ -1,0 +1,6 @@
+.DS_Store
+vendor/bundle
+.bundle
+web/.env
+.env
+*/.env
