@@ -1,33 +1,47 @@
 # require_relative '../lib/whatnext.rb'
 require 'sinatra'
 require 'pry-byebug'
+# require 'oauth'
+# require 'yelp'
 # require 'unirest'
 # require 'dotenv'
 
-  set :bind, "0.0.0.0"
-  # Dotenv.load
+set :bind, "0.0.0.0"
+# Dotenv.load
 
 get '/' do
   # home page
-  # has landing page button to start your adventure
+  # has landing page button to start your experience
   # after you enter you're sent to '/the_details'
-  "Doin Thangs"
+  
+  erb :index
 end
 
-get 'the_details' do
+get '/new' do
   # user inputs address -- push into destinations array
   # user inputs mode of transportation from dropdown
   # user inputs radius_filter from dropdown
+
+  erb :new
 end
 
-post'submit_details' do
+post'/create' do
   # stores the user inputs from 'the_details' to use in API calls
 
   # redirects to '/select_activity'
+  @@inputs = {}
+
+  @@inputs[:address] = params["address"].gsub(/,/, '').gsub(/\s/, '+')
+  @@inputs[:mode] = params["mode"].to_i
+  @@inputs[:radius] = (params["radius"].to_i/0.00062137).ceil
+
+  redirect to '/activity'
+
 end
 
-get '/select_activity' do
+get '/activity' do
   # serve user page with choice of "EAT", "DRINK" or "PLAY"
+
 
   # sends selected button as term in call to Yelp API
   # API call includes address
@@ -40,9 +54,11 @@ get '/select_activity' do
   # data['businesses'][i]['name']
 
   # redirect user to '/activity_genre/#{selected_activity}'
+
+  erb :activity
 end
 
-get '/activity_genres/#{selected_activity}' do
+get '/genre' do
   # serve user 2 random keys from the hash in '/select_activity'
   # user clicks button
 

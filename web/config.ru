@@ -1,3 +1,3 @@
 require './server.rb'
 
-run WhatNext
+run Chuser
