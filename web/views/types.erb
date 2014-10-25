@@ -1,0 +1,9 @@
+<% choices = Hash[@@categories.to_a.sample(2)].keys %>
+<div>
+	<form class="choice-button" action="/result" method="get">
+	    <input type="submit" name="types" value="<%=choices[0]%>">
+	</form>
+	<form class="choice-button" action="/result" method="get">
+	    <input type="submit" name="types" value="<%=choices[1]%>">
+	</form>
+</div>

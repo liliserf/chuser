@@ -6,9 +6,12 @@ gem 'pry-byebug'
 gem 'pg'
 gem 'rake'
 gem 'sinatra', '1.4.5'
+gem 'sinatra-contrib', :require => ['sinatra/reloader', 'sinatra/content_for']
 gem 'shotgun'
 gem 'yelp'
 gem 'oauth'
+gem 'unirest'
+gem 'dotenv'
 
 group :test do
   gem 'rack-test'

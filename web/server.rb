@@ -1,13 +1,13 @@
 # require_relative '../lib/whatnext.rb'
 require 'sinatra'
 require 'pry-byebug'
-# require 'oauth'
-# require 'yelp'
-# require 'unirest'
-# require 'dotenv'
+require 'oauth'
+require 'yelp'
+require 'unirest'
+require 'dotenv'
 
 set :bind, "0.0.0.0"
-# Dotenv.load
+Dotenv.load
 
 get '/' do
   # home page
@@ -28,7 +28,7 @@ end
 post'/create' do
   # stores the user inputs from 'the_details' to use in API calls
 
-  # redirects to '/select_activity'
+  # redirects to '/activity'
   @@inputs = {}
 
   @@inputs[:address] = params["address"].gsub(/,/, '').gsub(/\s/, '+')
@@ -42,30 +42,72 @@ end
 get '/activity' do
   # serve user page with choice of "EAT", "DRINK" or "PLAY"
 
+  erb :activity
+end
 
-  # sends selected button as term in call to Yelp API
+get '/type' do
+
+  # grabs secure keys:
+  consumer_key = ENV['YELP_KEY'],
+  consumer_secret = ENV['YELP_SECRET'],
+  token = ENV['YELP_TOKEN'],
+  token_secret = ENV['YELP_TOKEN_SECRET']  
+
+
+  # tweaks path depending on selected activity:
+  if params["activity"] == "EAT"
+    path = "/v2/search?term=restaurants&radius_filter=#{@@inputs[:radius]}&location=#{@@inputs[:address]}" 
+  elsif params["activity"] == "PLAY"
+    path = "/v2/search?term=entertainment&radius_filter=#{@@inputs[:radius]}&location=#{@@inputs[:address]}"
+  else
+    path = "/v2/search?term=bars&radius_filter=#{@@inputs[:radius]}&location=#{@@inputs[:address]}" 
+  end
+
+  # sets up for API call:
+  consumer = OAuth::Consumer.new(consumer_key, consumer_secret, {:site => "http://api.yelp.com"})
+  access_token = OAuth::AccessToken.new(consumer, token, token_secret)
+
+  # API response:
+  response = JSON(access_token.get(path).body)
+  # WHY DOES THIS THROW AN ERROR SOMETIMES???
+  # {"error"=>
+  # {"text"=>"The OAuth credentials are invalid", "id"=>"INVALID_OAUTH_CREDENTIALS"}}
+
+  # empty hash to store restaurant info:
+  @@categories = {}
+  
+  # send info into the hash:
+  response['businesses'].each_index do |i|
+    if @@categories[response['businesses'][i]['categories'][0][0]]
+      @@categories[response['businesses'][i]['categories'][0][0]] << [response['businesses'][i]['name'], response['businesses'][i]['location']['display_address'].join(', ').gsub(/,/, '').gsub(/\s/, '+')]
+    else
+      @@categories[response['businesses'][i]['categories'][0][0]] = [response['businesses'][i]['name'], response['businesses'][i]['location']['display_address'].join(', ').gsub(/,/, '').gsub(/\s/, '+')]
+    end
+  end
+
+  # OVERVIEW:
+  # sends selected button from actiity as term in call to Yelp API
   # API call includes address
   # API call includes preset catagory filters for activity choice
 
-  # store results in a hash. with key:
+  # store results in a hash. with key of categories:
   # data['businesses'][i]['categories'][0][0]
   
-  # and value is array: 
+  # and value is array of businesses with names/adresses(formatted for google maps): 
   # data['businesses'][i]['name']
 
   # redirect user to '/activity_genre/#{selected_activity}'
 
-  erb :activity
+  # serve user 2 random keys from the hash in '/type'
+
+  erb :types
 end
 
-get '/genre' do
-  # serve user 2 random keys from the hash in '/select_activity'
-  # user clicks button
+get '/result' do
 
-  # redirects to '/destination'
-end
+  # if params["activity"] == "EAT"
+  # end
 
-get '/destination' do
   # serve user a random value of the selected key from the previous hash.
   # if user says "eff that noise":
     # add name to discard_pile array
