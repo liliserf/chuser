@@ -48,9 +48,9 @@ end
 get '/type' do
 
   # grabs secure keys:
-  consumer_key = ENV['YELP_KEY'],
-  consumer_secret = ENV['YELP_SECRET'],
-  token = ENV['YELP_TOKEN'],
+  consumer_key = ENV['YELP_KEY']
+  consumer_secret = ENV['YELP_SECRET']
+  token = ENV['YELP_TOKEN']
   token_secret = ENV['YELP_TOKEN_SECRET']  
 
 
@@ -81,10 +81,13 @@ get '/type' do
     if @@categories[response['businesses'][i]['categories'][0][0]]
       @@categories[response['businesses'][i]['categories'][0][0]] << [response['businesses'][i]['name'], response['businesses'][i]['location']['display_address'].join(', ').gsub(/,/, '').gsub(/\s/, '+')]
     else
-      @@categories[response['businesses'][i]['categories'][0][0]] = [response['businesses'][i]['name'], response['businesses'][i]['location']['display_address'].join(', ').gsub(/,/, '').gsub(/\s/, '+')]
+      @@categories[response['businesses'][i]['categories'][0][0]] = []
+      @@categories[response['businesses'][i]['categories'][0][0]] << [response['businesses'][i]['name'], response['businesses'][i]['location']['display_address'].join(', ').gsub(/,/, '').gsub(/\s/, '+')]
     end
   end
 
+  @@choices = Hash[@@categories.to_a.sample(2)].keys
+  binding.pry
   # OVERVIEW:
   # sends selected button from actiity as term in call to Yelp API
   # API call includes address
@@ -105,7 +108,12 @@ end
 
 get '/result' do
 
-  # if params["activity"] == "EAT"
+  @result = @@categories[params["types"]].sample[0]
+
+  # if params["type"] == @@choices[0]
+  #   @result = @@categories[@@choices[0]].sample[0]
+  # else
+  #   @result = @@categories[@@choices[1]].sample[0]
   # end
 
   # serve user a random value of the selected key from the previous hash.
@@ -123,10 +131,12 @@ get '/result' do
 
   # if user requests to add activity:
     # redirect to '/select_activity'
+  erb :result
 end
 
 get '/map' do
   # provide user a mapped route
+  erb :map
 end
 
 
