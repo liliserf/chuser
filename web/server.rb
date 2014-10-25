@@ -87,7 +87,7 @@ get '/type' do
   end
 
   @@choices = Hash[@@categories.to_a.sample(2)].keys
-  binding.pry
+
   # OVERVIEW:
   # sends selected button from actiity as term in call to Yelp API
   # API call includes address
