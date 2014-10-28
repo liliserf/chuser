@@ -1,0 +1,16 @@
+<div>
+	<iframe
+	  width="60%"
+	  height="350"
+	  frameborder="0" style="border:0"
+	  src= "<%= @map_src %>">
+	</iframe>
+</div>
+
+<div>
+	<% @@names.each_index do |i| %>
+	<ul>
+		<ol><%= "#{i + 1}. #{@@names[i]}" %></ol>
+	</ul>
+	<% end %>
+</div>
