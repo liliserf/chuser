@@ -9,6 +9,7 @@ require 'dotenv'
 set :bind, "0.0.0.0"
 Dotenv.load
 
+
 get '/' do
   # home page
   # has landing page button to start your experience
@@ -22,6 +23,9 @@ get '/new' do
   # user inputs mode of transportation from dropdown
   # user inputs radius_filter from dropdown
 
+  @@addresses = []
+  @@names = []
+
   erb :new
 end
 
@@ -32,9 +36,14 @@ post'/create' do
   @@inputs = {}
 
   @@inputs[:address] = params["address"].gsub(/,/, '').gsub(/\s/, '+')
-  @@inputs[:mode] = params["mode"].to_i
+  @@inputs[:mode] = params["mode"]
   @@inputs[:radius] = (params["radius"].to_i/0.00062137).ceil
 
+  @@addresses << @@inputs[:address]
+  if @@names = []
+    @@names << "Starting Point"
+  end
+  
   redirect to '/activity'
 
 end
@@ -56,11 +65,11 @@ get '/type' do
 
   # tweaks path depending on selected activity:
   if params["activity"] == "EAT"
-    path = "/v2/search?term=restaurants&radius_filter=#{@@inputs[:radius]}&location=#{@@inputs[:address]}" 
+    path = "/v2/search?term=restaurants&radius_filter=#{@@inputs[:radius]}&location=#{@@addresses.last}" 
   elsif params["activity"] == "PLAY"
-    path = "/v2/search?term=entertainment&radius_filter=#{@@inputs[:radius]}&location=#{@@inputs[:address]}"
+    path = "/v2/search?term=parks+recreations&radius_filter=#{@@inputs[:radius]}&location=#{@@addresses.last}"
   else
-    path = "/v2/search?term=bars&radius_filter=#{@@inputs[:radius]}&location=#{@@inputs[:address]}" 
+    path = "/v2/search?term=bars&radius_filter=#{@@inputs[:radius]}&location=#{@@addresses.last}" 
   end
 
   # sets up for API call:
@@ -75,7 +84,7 @@ get '/type' do
 
   # empty hash to store restaurant info:
   @@categories = {}
-  
+  # binding.pry
   # send info into the hash:
   response['businesses'].each_index do |i|
     if @@categories[response['businesses'][i]['categories'][0][0]]
@@ -108,13 +117,15 @@ end
 
 get '/result' do
 
-  @result = @@categories[params["types"]].sample[0]
+  @result = @@categories[params["types"]].sample
+  @name = @result[0]
 
-  # if params["type"] == @@choices[0]
-  #   @result = @@categories[@@choices[0]].sample[0]
-  # else
-  #   @result = @@categories[@@choices[1]].sample[0]
-  # end
+  if params[:name] != "PASS!"
+    @@addresses << @result[1].gsub(/,/, '').gsub(/\s/, '+')
+    @@names << @name
+    # binding.pry
+  end
+
 
   # serve user a random value of the selected key from the previous hash.
   # if user says "eff that noise":
@@ -136,6 +147,37 @@ end
 
 get '/map' do
   # provide user a mapped route
+
+  numbered_stops_hash = {}
+  each_stop = []
+  @@all_stops = []
+
+  new_url = URI.encode('https://maps.googleapis.com/maps/api/directions/json?origin=' + @@addresses.first + '&destination=' + @@addresses.last + '&waypoints=' + @@addresses[1..-2].join('|')  + '&mode=' + @@inputs[:mode] + '&key=' + ENV['GOOGLE_MAPS_KEY'])
+
+
+  google_response = Unirest.get (new_url)
+
+  map_data = google_response.body
+
+  # binding.pry
+
+  map_data['routes'].first['legs'].each_index do |i|
+    each_stop << map_data['routes'].first['legs'][i]['start_address']
+    sub_leg = []
+    map_data['routes'].first['legs'][i]['steps'].each { |l| sub_leg << l['html_instructions']}
+    @@all_stops << sub_leg
+  end
+
+  each_stop.each_index do |i|
+    numbered_stops_hash[i+1] = each_stop[i]
+  end
+
+  if @@addresses.length > 2
+    @map_src = ("https://www.google.com/maps/embed/v1/directions?key=" + ENV['GOOGLE_MAPS_KEY'] + "&origin=" + @@addresses.first + "&destination=" + @@addresses.last + "&waypoints=" + @@addresses[1..-2].join('|') + '&mode=' + @@inputs[:mode])
+  else
+    @map_src = ("https://www.google.com/maps/embed/v1/directions?key=" + ENV['GOOGLE_MAPS_KEY'] + "&origin=" + @@addresses.first + "&destination=" + @@addresses.last + '&mode=' + @@inputs[:mode])
+  end
+
   erb :map
 end
 

@@ -1,15 +1,17 @@
-<%= @result %>
+<div class="destination"> 
+	<%= @name %>
+</div>
 
 
 <div>
-	<form class="next-button" action="/new" method="get">
+	<form class="next-button" action="/activity" method="get">
 	    <input type="submit" name="next" value="Another!">
 	</form>
-	<form class="next-button" action="/new" method="get">
+	<form class="next-button" action="/activity" method="get">
 	    <input type="submit" name="next" value="PASS!">
 	</form>
 
-	<form class="next-button" action="/route" method="get">
+	<form class="next-button" action="/map" method="get">
 	    <input type="submit" name="next" value="Route me!">
 	</form>
 </div>
