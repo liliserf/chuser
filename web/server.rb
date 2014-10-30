@@ -41,9 +41,7 @@ post'/create' do
   @@inputs[:radius] = (params["radius"].to_i/0.00062137).ceil
 
   @@addresses << @@inputs[:address]
-  if @@names = []
-    @@names << "Starting Point"
-  end
+  @@names << "Starting Point"
   
   redirect to '/activity'
 
@@ -51,11 +49,19 @@ end
 
 get '/activity' do
   # serve user page with choice of "EAT", "DRINK" or "PLAY"
+  # @result = @@categories[params["category"]].sample
+
+  binding.pry
+  if params['next'] == "Another!"
+    @@addresses << params['venue_loc']
+    @@names << params['venue_name']
+  end
 
   erb :activity
 end
 
 get '/type' do
+
 
   # grabs secure keys:
   consumer_key = ENV['YELP_KEY']
@@ -72,7 +78,6 @@ get '/type' do
   else
     path = "/v2/search?term=bars&radius_filter=#{@@inputs[:radius]}&location=#{@@addresses.last}" 
   end
-
   # sets up for API call:
   consumer = OAuth::Consumer.new(consumer_key, consumer_secret, {:site => "http://api.yelp.com"})
   access_token = OAuth::AccessToken.new(consumer, token, token_secret)
@@ -117,15 +122,13 @@ get '/type' do
 end
 
 get '/result' do
+  @result = @@categories[params["category"]].sample
 
-  @result = @@categories[params["types"]].sample
+  @category = params['category']
   @name = @result[0]
+  @location = @result[1]
 
-  if params[:name] != "PASS!"
-    @@addresses << @result[1].gsub(/,/, '').gsub(/\s/, '+')
-    @@names << @name
-    # binding.pry
-  end
+  # @name, @location = @result
 
 
   # serve user a random value of the selected key from the previous hash.
@@ -148,6 +151,10 @@ end
 
 get '/map' do
   # provide user a mapped route
+  if params['next'] == "Route me!"
+    @@addresses << params['venue_loc']
+    @@names << params['venue_name']
+  end
 
   numbered_stops_hash = {}
   each_stop = []

@@ -7,6 +7,8 @@
 
 		<div>
 			<form class="next-button" action="/activity" method="get">
+			    <input type="hidden" name="venue_name" value="<%= @name %>">
+			    <input type="hidden" name="venue_loc" value="<%= @location %>">
 			    <input type="submit" name="next" class="button" value="Another!">
 			</form>
 			<form class="next-button" action="/activity" method="get">
@@ -14,7 +16,9 @@
 			</form>
 
 			<form class="next-button" action="/map" method="get">
-			    <input type="submit" name="next" class="button" value="Route me!">
+				<input type="hidden" name="venue_name" class="button" value="<%= @name %>">
+				<input type="hidden" name="venue_loc" value="<%= @location %>">
+			    <input type="submit" name="next" value="Route me!">
 			</form>
 		</div>
 	</div>
