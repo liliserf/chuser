@@ -12,6 +12,8 @@ gem 'yelp'
 gem 'oauth'
 gem 'unirest'
 gem 'dotenv'
+gem 'http'
+gem 'sinatra-twitter-bootstrap', :require => 'sinatra/twitter-bootstrap'
 
 group :test do
   gem 'rack-test'

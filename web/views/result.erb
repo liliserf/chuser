@@ -1,17 +1,21 @@
-<div class="destination"> 
-	<%= @name %>
-</div>
+<div class="">
+  	<div class="">
+		<div class="destination"> 
+			<%= @name %>
+		</div>
 
 
-<div>
-	<form class="next-button" action="/activity" method="get">
-	    <input type="submit" name="next" value="Another!">
-	</form>
-	<form class="next-button" action="/activity" method="get">
-	    <input type="submit" name="next" value="PASS!">
-	</form>
+		<div>
+			<form class="next-button" action="/activity" method="get">
+			    <input type="submit" name="next" class="button" value="Another!">
+			</form>
+			<form class="next-button" action="/activity" method="get">
+			    <input type="submit" name="next" class="button" value="PASS!">
+			</form>
 
-	<form class="next-button" action="/map" method="get">
-	    <input type="submit" name="next" value="Route me!">
-	</form>
+			<form class="next-button" action="/map" method="get">
+			    <input type="submit" name="next" class="button" value="Route me!">
+			</form>
+		</div>
+	</div>
 </div>

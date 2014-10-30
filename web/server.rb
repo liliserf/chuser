@@ -1,13 +1,14 @@
-# require_relative '../lib/whatnext.rb'
 require 'sinatra'
 require 'pry-byebug'
 require 'oauth'
 require 'yelp'
 require 'unirest'
 require 'dotenv'
+require 'sinatra/twitter-bootstrap'
 
 set :bind, "0.0.0.0"
 Dotenv.load
+register Sinatra::Twitter::Bootstrap::Assets
 
 
 get '/' do
@@ -84,7 +85,7 @@ get '/type' do
 
   # empty hash to store restaurant info:
   @@categories = {}
-  # binding.pry
+
   # send info into the hash:
   response['businesses'].each_index do |i|
     if @@categories[response['businesses'][i]['categories'][0][0]]

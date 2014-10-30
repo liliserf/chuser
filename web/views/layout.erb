@@ -2,30 +2,23 @@
 <html>
 <head>
 	<title>chüser</title>
-	<link rel="stylesheet" type="text/css" href="/stylesheets/css/normalize.css">
-<!-- <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/foundation/5.1.1/css/foundation.css"> -->
-<link rel="stylesheet" type="text/css" href="/stylesheets/css/main.css">
-<!-- <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'> -->
-
-
-      
+	<link rel="stylesheet" type="text/css" href="stylesheets/css/normalize.css">
+	<%= bootstrap_assets %>
+	<link rel="stylesheet" type="text/css" href="stylesheets/css/main.css">
 </head>
 <body>
+	<div class="background">
+		<div class="">
+			<div class="">
+				<h1>chüser</h1>
+			</div>
+			<div>
+				<%= yield %>
+			</div> 
 
-<div class="header row">
-	<div class="large-9 columns">
-		<h1>chüser</h1>
-	</div>
-<!-- 	<div class="large-3 columns">
-  			<a href="/" class="new">I'm over this.</a>	
-		</div>
-	</div> -->
-
-  	<%= yield %>
-  </div> 
-
-  <script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
-    <script src="/logic/js/blank.js"></script>
+<!-- 		 	<script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
+		    <script src="/logic/js/blank.js"></script>
+ -->	</div>
 </body>
 </html>
 
