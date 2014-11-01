@@ -13,7 +13,7 @@ gem 'oauth'
 gem 'unirest'
 gem 'dotenv'
 gem 'http'
-gem 'sinatra-twitter-bootstrap', :require => 'sinatra/twitter-bootstrap'
+gem 'sinatra-bootstrap'
 
 group :test do
   gem 'rack-test'

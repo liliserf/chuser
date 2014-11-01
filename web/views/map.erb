@@ -1,16 +1,18 @@
-<div>
-	<iframe
-	  width="60%"
-	  height="350"
-	  frameborder="0" style="border:0"
-	  src= "<%= @map_src %>">
-	</iframe>
-</div>
-
-<div>
-	<% @@names.each_index do |i| %>
-	<ul>
-		<ol><%= "#{i + 1}. #{@@names[i]}" %></ol>
-	</ul>
-	<% end %>
+<div class="row">
+	<div class="col-md-6">
+		<h2>Directions</h2>
+		<% @data.each do |place| %>
+			<p><strong><%= place.first %></strong></p>
+			<p class="accordian"><%= place.last.join("<br>") %></p>
+		<% end %>
+		<p><strong><%= @last_name.first %></strong></p>
+	</div>
+	<div class="col-md-6">
+		<iframe
+		  width="100%"
+		  height="400px"
+		  frameborder="0" style="border:0"
+		  src= "<%= @map_src %>">
+		</iframe>
+	</div>
 </div>

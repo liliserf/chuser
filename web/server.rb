@@ -4,28 +4,26 @@ require 'oauth'
 require 'yelp'
 require 'unirest'
 require 'dotenv'
-require 'sinatra/twitter-bootstrap'
+require 'json'
 
 set :bind, "0.0.0.0"
 Dotenv.load
-register Sinatra::Twitter::Bootstrap::Assets
+enable :sessions
 
 
 get '/' do
-  # home page
   # has landing page button to start your experience
-  # after you enter you're sent to '/the_details'
-  
   erb :index
 end
 
 get '/new' do
-  # user inputs address -- push into destinations array
+  # user inputs address
   # user inputs mode of transportation from dropdown
   # user inputs radius_filter from dropdown
-
-  @@addresses = []
-  @@names = []
+  
+  # adds address and names to session as json: 
+  session[:addresses] = [].to_json
+  session[:names] = ["Starting Point"].to_json
 
   erb :new
 end
@@ -34,162 +32,150 @@ post'/create' do
   # stores the user inputs from 'the_details' to use in API calls
 
   # redirects to '/activity'
-  @@inputs = {}
 
-  @@inputs[:address] = params["address"].gsub(/,/, '').gsub(/\s/, '+')
-  @@inputs[:mode] = params["mode"]
-  @@inputs[:radius] = (params["radius"].to_i/0.00062137).ceil
+  # store the user inputs from params
+  new_address = params["address"].gsub(/,/, '').gsub(/\s/, '+')
+  session[:mode] = params["mode"]
+  session[:radius] = params["radius"]
 
-  @@addresses << @@inputs[:address]
-  @@names << "Starting Point"
-  
+  # push inputs into array and convert back to json for session:
+  addresses = JSON.parse session[:addresses]
+  addresses << new_address
+  session[:addresses] = addresses.to_json
+
   redirect to '/activity'
 
 end
 
 get '/activity' do
   # serve user page with choice of "EAT", "DRINK" or "PLAY"
-  # @result = @@categories[params["category"]].sample
+  
+  addresses = JSON.parse session[:addresses]
+  names = JSON.parse session[:names]
 
-  binding.pry
+  # adds another requirement for yelp API to session:
   if params['next'] == "Another!"
-    @@addresses << params['venue_loc']
-    @@names << params['venue_name']
+    addresses << params['venue_loc']
+    names << params['venue_name']
   end
+
+  session[:addresses] = addresses.to_json
+  session[:names] = names.to_json
+
 
   erb :activity
 end
 
 get '/type' do
 
-
   # grabs secure keys:
   consumer_key = ENV['YELP_KEY']
   consumer_secret = ENV['YELP_SECRET']
   token = ENV['YELP_TOKEN']
-  token_secret = ENV['YELP_TOKEN_SECRET']  
+  token_secret = ENV['YELP_TOKEN_SECRET'] 
+  # get the radius out of session 
+  @radius = session[:radius]
+  # get the address out of session
+  @addresses = JSON.parse session[:addresses]
 
 
-  # tweaks path depending on selected activity:
+  # alters path depending on selected activity:
   if params["activity"] == "EAT"
-    path = "/v2/search?term=restaurants&radius_filter=#{@@inputs[:radius]}&location=#{@@addresses.last}" 
+    path = "/v2/search?term=restaurants&radius_filter=" + @radius + 
+            "&location=" + @addresses.first
   elsif params["activity"] == "PLAY"
-    path = "/v2/search?term=parks+recreations&radius_filter=#{@@inputs[:radius]}&location=#{@@addresses.last}"
+    path = "/v2/search?term=parks+recreations&radius_filter=" + @radius + 
+            "&location=" + @addresses.first
   else
-    path = "/v2/search?term=bars&radius_filter=#{@@inputs[:radius]}&location=#{@@addresses.last}" 
+    path = "/v2/search?term=bars&radius_filter=" + @radius + 
+            "&location=" + @addresses.first 
   end
   # sets up for API call:
-  consumer = OAuth::Consumer.new(consumer_key, consumer_secret, {:site => "http://api.yelp.com"})
+  consumer = OAuth::Consumer.new(consumer_key, consumer_secret, 
+            {:site => "http://api.yelp.com"})
   access_token = OAuth::AccessToken.new(consumer, token, token_secret)
 
   # API response:
   response = JSON(access_token.get(path).body)
-  # WHY DOES THIS THROW AN ERROR SOMETIMES???
-  # {"error"=>
-  # {"text"=>"The OAuth credentials are invalid", "id"=>"INVALID_OAUTH_CREDENTIALS"}}
 
-  # empty hash to store restaurant info:
-  @@categories = {}
+  # empty hash to store restaurant categories and info:
+  @categories = {}
 
-  # send info into the hash:
+  # stores info into the hash:
   response['businesses'].each_index do |i|
-    if @@categories[response['businesses'][i]['categories'][0][0]]
-      @@categories[response['businesses'][i]['categories'][0][0]] << [response['businesses'][i]['name'], response['businesses'][i]['location']['display_address'].join(', ').gsub(/,/, '').gsub(/\s/, '+')]
+    if @categories[response['businesses'][i]['categories'][0][0]]
+      @categories[response['businesses'][i]['categories'][0][0]] << [response['businesses'][i]['name'], response['businesses'][i]['location']['display_address'].join(', ').gsub(/,/, '').gsub(/\s/, '+')]
     else
-      @@categories[response['businesses'][i]['categories'][0][0]] = []
-      @@categories[response['businesses'][i]['categories'][0][0]] << [response['businesses'][i]['name'], response['businesses'][i]['location']['display_address'].join(', ').gsub(/,/, '').gsub(/\s/, '+')]
+      @categories[response['businesses'][i]['categories'][0][0]] = []
+      @categories[response['businesses'][i]['categories'][0][0]] << [response['businesses'][i]['name'], response['businesses'][i]['location']['display_address'].join(', ').gsub(/,/, '').gsub(/\s/, '+')]
     end
   end
 
-  @@choices = Hash[@@categories.to_a.sample(2)].keys
+  # saves the hash as json in the session
+  session[:categories] = @categories.to_json
 
-  # OVERVIEW:
-  # sends selected button from actiity as term in call to Yelp API
-  # API call includes address
-  # API call includes preset catagory filters for activity choice
-
-  # store results in a hash. with key of categories:
-  # data['businesses'][i]['categories'][0][0]
-  
-  # and value is array of businesses with names/adresses(formatted for google maps): 
-  # data['businesses'][i]['name']
-
-  # redirect user to '/activity_genre/#{selected_activity}'
-
-  # serve user 2 random keys from the hash in '/type'
+  # selects 2 random keys for user to choose from:
+  @choices = Hash[@categories.to_a.sample(2)].keys
 
   erb :types
 end
 
 get '/result' do
-  @result = @@categories[params["category"]].sample
 
+  # takes categories hash out of session again:
+  categories = JSON.parse session[:categories]
+
+  # serves user output based on category choice:
+  @result = categories[params["category"]].sample
+
+  # saves result as variables to show in view:
   @category = params['category']
-  @name = @result[0]
-  @location = @result[1]
+  @name, @location = @result
 
-  # @name, @location = @result
-
-
-  # serve user a random value of the selected key from the previous hash.
-  # if user says "eff that noise":
-    # add name to discard_pile array
-    # redirect '/select_activity'
-
-  # add address of business to destinations array
-  # provide user with link to route or link to add another destination.
-
-  # if user requests route:
-    # make call to Google Maps API
-    # use address array and selected mode
-    # redirect to '/map'
-
-  # if user requests to add activity:
-    # redirect to '/select_activity'
   erb :result
 end
 
 get '/map' do
-  # provide user a mapped route
+
+  # grabs addresses and names from session:
+  addresses = JSON.parse session[:addresses]
+  names = JSON.parse session[:names]
+
+  # adds new name/location to arrays:
   if params['next'] == "Route me!"
-    @@addresses << params['venue_loc']
-    @@names << params['venue_name']
+    addresses << params['venue_loc']
+    names << params['venue_name']
   end
 
-  numbered_stops_hash = {}
-  each_stop = []
-  @@all_stops = []
-
-  new_url = URI.encode('https://maps.googleapis.com/maps/api/directions/json?origin=' + @@addresses.first + '&destination=' + @@addresses.last + '&waypoints=' + @@addresses[1..-2].join('|')  + '&mode=' + @@inputs[:mode] + '&key=' + ENV['GOOGLE_MAPS_KEY'])
-
-
+  # calls google API:
+  new_url = URI.encode('https://maps.googleapis.com/maps/api/directions/json?origin=' +
+                        addresses.first + '&destination=' + addresses.last +
+                        '&waypoints=' + addresses[1..-2].join('|')  + '&mode=' +
+                        session[:mode] + '&key=' + ENV['GOOGLE_MAPS_KEY'])
   google_response = Unirest.get (new_url)
-
   map_data = google_response.body
 
-  # binding.pry
 
-  map_data['routes'].first['legs'].each_index do |i|
-    each_stop << map_data['routes'].first['legs'][i]['start_address']
-    sub_leg = []
-    map_data['routes'].first['legs'][i]['steps'].each { |l| sub_leg << l['html_instructions']}
-    @@all_stops << sub_leg
-  end
+  # parses response into directions:
+  legs = map_data["routes"].first["legs"]
+  directions = legs.map { |x| x["steps"].map { |y| y["html_instructions"] } }
+  places = names.take(directions.size+1)
 
-  each_stop.each_index do |i|
-    numbered_stops_hash[i+1] = each_stop[i]
-  end
 
-  if @@addresses.length > 2
-    @map_src = ("https://www.google.com/maps/embed/v1/directions?key=" + ENV['GOOGLE_MAPS_KEY'] + "&origin=" + @@addresses.first + "&destination=" + @@addresses.last + "&waypoints=" + @@addresses[1..-2].join('|') + '&mode=' + @@inputs[:mode])
+  # creates a map with all addresses:
+  if addresses.length > 2
+    @map_src = ("https://www.google.com/maps/embed/v1/directions?key=" + 
+                ENV['GOOGLE_MAPS_KEY'] + "&origin=" + addresses.first + 
+                "&destination=" + addresses.last + "&waypoints=" + 
+                addresses[1..-2].join('|') + '&mode=' + session[:mode])
   else
-    @map_src = ("https://www.google.com/maps/embed/v1/directions?key=" + ENV['GOOGLE_MAPS_KEY'] + "&origin=" + @@addresses.first + "&destination=" + @@addresses.last + '&mode=' + @@inputs[:mode])
+    @map_src = ("https://www.google.com/maps/embed/v1/directions?key=" + 
+               ENV['GOOGLE_MAPS_KEY'] + "&origin=" + addresses.first + 
+                "&destination=" + addresses.last + '&mode=' + session[:mode])
   end
 
+  # selects data needed for view:s
+  @data = places.zip directions
+  @last_name = @data.pop
   erb :map
 end
-
-
-
-## only need a post when there is a form!!
-

@@ -59,6 +59,9 @@ GEM
       rack (~> 1.4)
       rack-protection (~> 1.4)
       tilt (~> 1.3, >= 1.3.4)
+    sinatra-bootstrap (0.6.1)
+      sinatra (>= 1.0)
+      sinatra-outputbuffer
     sinatra-contrib (1.4.2)
       backports (>= 2.0)
       multi_json
@@ -66,7 +69,8 @@ GEM
       rack-test
       sinatra (~> 1.4.0)
       tilt (~> 1.3)
-    sinatra-twitter-bootstrap (2.3.3)
+    sinatra-outputbuffer (0.1.0)
+      sinatra (>= 1.0.a)
     slop (3.6.0)
     tilt (1.4.1)
     unirest (1.1.2)
@@ -92,7 +96,7 @@ DEPENDENCIES
   rspec (~> 2.14.1)
   shotgun
   sinatra (= 1.4.5)
+  sinatra-bootstrap
   sinatra-contrib
-  sinatra-twitter-bootstrap
   unirest
   yelp

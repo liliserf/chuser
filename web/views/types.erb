@@ -1,10 +1,10 @@
-<div class="">
-  	<div class="">
-		<form class="choice-button" action="/result" method="get">
-		    <input type="submit" name="category" class="button" value="<%=@@choices[0]%>">
-		</form>
-		<form class="choice-button" action="/result" method="get">
-		    <input type="submit" name="category" class="button" value="<%=@@choices[1]%>">
-		</form>
+<form role="form" action="/result" method="get">
+	<div class="form-group">
+    	<input type="submit" class="btn btn-primary btn-lg btn-block" name="category" value="<%=@choices[0]%>">
+    </div>
+</form>
+<form role="form" action="/result" method="get">
+	<div class="form-group">
+	    <input type="submit" class="btn btn-primary btn-lg btn-block" name="category" value="<%=@choices[1]%>">
 	</div>
-</div>
+</form>

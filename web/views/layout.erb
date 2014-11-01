@@ -2,23 +2,33 @@
 <html>
 <head>
 	<title>chüser</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<!-- Bootstrap -->
+	<link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+	<link href="/vendor/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet">
 	<link rel="stylesheet" type="text/css" href="stylesheets/css/normalize.css">
-	<%= bootstrap_assets %>
 	<link rel="stylesheet" type="text/css" href="stylesheets/css/main.css">
 </head>
 <body>
-	<div class="background">
-		<div class="">
-			<div class="">
-				<h1>chüser</h1>
+	<div class="container">
+		<div class="row">
+				<div class="col-md-8 col-md-offset-2">
+					<div class="page-header">
+						<h1>chüser</h1>
+					</div>
+				</div>
+					<div class="col-md-8 col-md-offset-2">
+						<div class="well well-lg">
+							<%= yield %>
+						</div>
+					</div> 
 			</div>
-			<div>
-				<%= yield %>
-			</div> 
 
-<!-- 		 	<script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
+		 	<script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
 		    <script src="/logic/js/blank.js"></script>
- -->	</div>
+		</div>
+	</div>
 </body>
 </html>
 

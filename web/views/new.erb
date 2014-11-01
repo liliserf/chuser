@@ -1,11 +1,10 @@
-<div class="">
-  <div class="">
-    <form method="post" action="/create">
-      <div class="start_address">
+
+    <form role="form" method="post" action="/create">
+      <div class="form-group">
         <label for="address">Where are you right now:</label>
         <input type="text" id="address" name="address" />
       </div>
-      <div class="mode">
+      <div class="form-group">
           <label for="mode">How do you plan on getting there?:</label>
           <select name="mode">
            <option value="driving">By car</option>
@@ -13,20 +12,18 @@
            <option value="bicycling">By bike</option>
          </select>
       </div>
-      <div class="radius">
+      <div class="form-group">
           <label for="radius">Are you willing to go the distance?:</label>
           <select name="radius">
-           <option value="1">1 mile</option>
-           <option value="2">2 miles</option>
-           <option value="5">5 miles</option>
-           <option value="10">10 miles</option>
-           <option value="15">15 miles</option>
-           <option value="20">25 miles</option>
+           <option value="1610">1 mile</option>
+           <option value="3220">2 miles</option>
+           <option value="8050">5 miles</option>
+           <option value="16010">10 miles</option>
+           <option value="24140">15 miles</option>
+           <option value="40230">25 miles</option>
          </select>
       </div>
       <div>
         <input type="submit" value="Hit me">
       </div>
     </form>
-  </div>
-</div>

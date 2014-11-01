@@ -1,25 +1,24 @@
-<div class="">
-  	<div class="">
-		<div class="destination"> 
-			<%= @name %>
-		</div>
-
-
-		<div>
-			<form class="next-button" action="/activity" method="get">
-			    <input type="hidden" name="venue_name" value="<%= @name %>">
-			    <input type="hidden" name="venue_loc" value="<%= @location %>">
-			    <input type="submit" name="next" class="button" value="Another!">
-			</form>
-			<form class="next-button" action="/activity" method="get">
-			    <input type="submit" name="next" class="button" value="PASS!">
-			</form>
-
-			<form class="next-button" action="/map" method="get">
-				<input type="hidden" name="venue_name" class="button" value="<%= @name %>">
-				<input type="hidden" name="venue_loc" value="<%= @location %>">
-			    <input type="submit" name="next" value="Route me!">
-			</form>
-		</div>
-	</div>
+<div class="destination"> 
+	<%= @name %>
 </div>
+<form role="form" action="/activity" method="get">
+	<div class="form-group">
+		<input type="hidden" name="venue_name" value="<%= @name %>">
+		<input type="hidden" name="venue_loc" value="<%= @location %>">
+		<input type="submit" name="next" class="btn btn-success btn-lg btn-block" value="Another!">
+	</div>
+</form>
+
+<form role="form" action="/activity" method="get">
+	<div class="form-group">
+		<input type="submit" name="next" class="btn btn-danger btn-lg btn-block" value="PASS!">
+	</div>
+</form>
+
+<form role="form" action="/map" method="get">
+	<div class="form-group">
+		<input type="hidden" name="venue_name" class="button" value="<%= @name %>">
+		<input type="hidden" name="venue_loc" value="<%= @location %>">
+		<input type="submit" name="next" class="btn btn-primary btn-lg btn-block" value="Route me!">
+	</div>
+</form>
