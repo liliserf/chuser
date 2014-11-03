@@ -13,7 +13,7 @@ set :sessions, true
 
 get '/' do
   # has landing page button to start your experience
-  erb :index
+  redirect to "/new"
 end
 
 get '/new' do
@@ -81,13 +81,13 @@ get '/type' do
 
   # alters path depending on selected activity:
   if params["activity"] == "EAT"
-    path = "/v2/search?term=restaurants&radius_filter=" + @radius + 
+    path = "/v2/search?category_filter=food,restaurants&radius_filter=" + @radius + 
             "&location=" + @addresses.first
   elsif params["activity"] == "PLAY"
-    path = "/v2/search?term=parks+recreations&radius_filter=" + @radius + 
+    path = "/v2/search?category_filter=active,arts,localflavor&radius_filter=" + @radius + 
             "&location=" + @addresses.first
   else
-    path = "/v2/search?term=bars&radius_filter=" + @radius + 
+    path = "/v2/search?category_filter=bars&radius_filter=" + @radius + 
             "&location=" + @addresses.first 
   end
   # sets up for API call:
@@ -98,7 +98,6 @@ get '/type' do
   # API response:
   response = JSON(access_token.get(path).body)
   # empty hash to store restaurant categories and info:
-
   session[:categories] = [].to_json
 
   @categories = {}
