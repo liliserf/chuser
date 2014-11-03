@@ -8,7 +8,7 @@ require 'json'
 
 set :bind, "0.0.0.0"
 Dotenv.load
-enable :sessions
+set :sessions, true
 
 
 get '/' do
@@ -98,7 +98,9 @@ get '/type' do
   # API response:
   response = JSON(access_token.get(path).body)
   # empty hash to store restaurant categories and info:
+
   session[:categories] = [].to_json
+
   @categories = {}
   # stores info into the hash:
   response['businesses'].each_index do |i|
@@ -110,12 +112,12 @@ get '/type' do
     end
   end
 
-
   # saves the hash as json in the session
-  session[:categories] = @categories.to_json
+  cats = @categories.to_a.sample(2)
+  session[:categories] = cats.to_json
 
   # selects 2 random keys for user to choose from:
-  @choices = Hash[@categories.to_a.sample(2)].keys
+  @choices = Hash[cats].keys
 
   erb :types
 end
@@ -123,9 +125,8 @@ end
 get '/result' do
 
   # takes categories hash out of session again:
-  categories = JSON.parse session[:categories]
+  categories = Hash[JSON.parse session[:categories]]
   # selects output for user based on category choice:
-  
   result = categories[params["category"]].sample
 
   # saves result as variables to show in view:
