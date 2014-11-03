@@ -37,3 +37,8 @@ li {
 .well.well-lg {
   border-radius: 15px;
 }
+
+.directions {
+	padding-top: 0px;
+	padding-bottom: 15px;
+}
