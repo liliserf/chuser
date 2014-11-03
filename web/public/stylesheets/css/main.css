@@ -13,9 +13,13 @@ body {
     			 3px 3px 5px #4E4B44; 
 }
 
-a:hover {
-	color: #ff4f4f;
+.result a {
 	text-decoration: none;
+	color: #4E4B44;
+}
+
+.result a:hover {
+	color: #ff4f4f;
 }
 
 li {
@@ -26,21 +30,10 @@ li {
 	margin-top: 10px;
 }
 
-.result {
-	color: #4E4B44;
-}
-
-
-a.chuser:hover {
-	color: #ff4f4f;
+.chuser a:hover {
 	text-decoration: none;
 }
 
 .well.well-lg {
   border-radius: 15px;
-}
-
-.directions {
-	padding-top: 0px;
-	padding-bottom: 15px;
 }
