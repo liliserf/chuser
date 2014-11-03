@@ -1,10 +1,14 @@
-<form role="form" action="/result" method="get">
-	<div class="form-group">
-    	<input type="submit" class="btn btn-primary btn-lg btn-block" name="category" value="<%=@choices[0]%>">
-    </div>
-</form>
-<form role="form" action="/result" method="get">
-	<div class="form-group">
-	    <input type="submit" class="btn btn-primary btn-lg btn-block" name="category" value="<%=@choices[1]%>">
+<div class="col-md-6 col-md-offset-3">
+	<div class="well well-lg">
+		<form role="form" action="/result" method="get">
+			<div class="form-group">
+				<input type="submit" class="btn btn-primary btn-lg btn-block" name="category" value="<%=@choices[0]%>">
+			</div>
+		</form>
+		<form role="form" action="/result" method="get">
+			<div class="form-group">
+				<input type="submit" class="btn btn-primary btn-lg btn-block" name="category" value="<%=@choices[1]%>">
+			</div>
+		</form>
 	</div>
-</form>
+</div>

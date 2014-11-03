@@ -97,19 +97,19 @@ get '/type' do
 
   # API response:
   response = JSON(access_token.get(path).body)
-
   # empty hash to store restaurant categories and info:
+  session[:categories] = [].to_json
   @categories = {}
-
   # stores info into the hash:
   response['businesses'].each_index do |i|
     if @categories[response['businesses'][i]['categories'][0][0]]
-      @categories[response['businesses'][i]['categories'][0][0]] << [response['businesses'][i]['name'], response['businesses'][i]['location']['display_address'].join(', ').gsub(/,/, '').gsub(/\s/, '+')]
+      @categories[response['businesses'][i]['categories'][0][0]] << [response['businesses'][i]['name'], response['businesses'][i]['location']['display_address'].join(', ').gsub(/,/, '').gsub(/\s/, '+'), response['businesses'][i]['url']]
     else
       @categories[response['businesses'][i]['categories'][0][0]] = []
-      @categories[response['businesses'][i]['categories'][0][0]] << [response['businesses'][i]['name'], response['businesses'][i]['location']['display_address'].join(', ').gsub(/,/, '').gsub(/\s/, '+')]
+      @categories[response['businesses'][i]['categories'][0][0]] << [response['businesses'][i]['name'], response['businesses'][i]['location']['display_address'].join(', ').gsub(/,/, '').gsub(/\s/, '+'), response['businesses'][i]['url']]
     end
   end
+
 
   # saves the hash as json in the session
   session[:categories] = @categories.to_json
@@ -124,13 +124,15 @@ get '/result' do
 
   # takes categories hash out of session again:
   categories = JSON.parse session[:categories]
-
-  # serves user output based on category choice:
-  @result = categories[params["category"]].sample
+  # selects output for user based on category choice:
+  
+  result = categories[params["category"]].sample
 
   # saves result as variables to show in view:
   @category = params['category']
-  @name, @location = @result
+  @name = result[0]
+  @location = result[1]
+  @url = result[2]
 
   erb :result
 end
@@ -176,6 +178,7 @@ get '/map' do
 
   # selects data needed for view:s
   @data = places.zip directions
-  @last_name = @data.pop
+  @data[-1][-1] = ["Final destination."]
+  # @last_name = @data.pop
   erb :map
 end

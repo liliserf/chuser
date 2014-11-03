@@ -1,11 +1,16 @@
 <div class="row">
 	<div class="col-md-6">
 		<h2>Directions</h2>
-		<% @data.each do |place| %>
-			<p><strong><%= place.first %></strong></p>
-			<p class="accordian"><%= place.last.join("<br>") %></p>
-		<% end %>
-		<p><strong><%= @last_name.first %></strong></p>
+		<ul>
+			<% @data.each do |place| %>
+				<h4 class="toggle"><%= place.first %></h4>
+				<div>
+				<% place.last.each do |step| %>
+					<li><%= step %></li>
+				<% end %>
+				</div>
+			<% end %>
+		</ul>
 	</div>
 	<div class="col-md-6">
 		<iframe
@@ -16,3 +21,5 @@
 		</iframe>
 	</div>
 </div>
+
+
