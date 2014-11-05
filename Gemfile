@@ -8,12 +8,14 @@ gem 'rake'
 gem 'sinatra', '1.4.5'
 gem 'sinatra-contrib', :require => ['sinatra/reloader', 'sinatra/content_for']
 gem 'shotgun'
-gem 'yelp'
+gem 'yelpify', :path => '/home/vagrant/code/mks/yelpify'
 gem 'oauth'
 gem 'unirest'
 gem 'dotenv'
 gem 'http'
 gem 'sinatra-bootstrap'
+
+
 
 group :test do
   gem 'rack-test'

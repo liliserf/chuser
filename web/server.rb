@@ -1,10 +1,10 @@
 require 'sinatra'
 require 'pry-byebug'
 require 'oauth'
-require 'yelp'
 require 'unirest'
 require 'dotenv'
 require 'json'
+require 'yelpify'
 
 set :bind, "0.0.0.0"
 Dotenv.load
@@ -67,52 +67,56 @@ get '/activity' do
 end
 
 get '/type' do
+# grabs secure keys:
+  oauth_creds = {
+    consumer_key:    ENV['YELP_KEY'],
+    consumer_secret: ENV['YELP_SECRET'],
+    token:           ENV['YELP_TOKEN'],
+    token_secret:    ENV['YELP_TOKEN_SECRET']
+  }
+  @client = Yelpify.new_client(oauth_creds)
 
-  # grabs secure keys:
-  consumer_key = ENV['YELP_KEY']
-  consumer_secret = ENV['YELP_SECRET']
-  token = ENV['YELP_TOKEN']
-  token_secret = ENV['YELP_TOKEN_SECRET'] 
-  # get the radius out of session 
+  # get the radius & address out of session 
   @radius = session[:radius]
-  # get the address out of session
-  @addresses = JSON.parse session[:addresses]
+  @addresses = JSON.parse(session[:addresses])
 
+  # set fixed search data
+  search_data = {
+    "location"      => @addresses.first,
+    "radius_filter" => @radius
+  }
 
   # alters path depending on selected activity:
   if params["activity"] == "EAT"
-    path = "/v2/search?category_filter=food,restaurants&radius_filter=" + @radius + 
-            "&location=" + @addresses.first
+    search_data["category_filter"] = "food,restaurants"
   elsif params["activity"] == "PLAY"
-    path = "/v2/search?category_filter=active,arts,localflavor&radius_filter=" + @radius + 
-            "&location=" + @addresses.first
+    search_data["category_filter"] = "active,arts"
   else
-    path = "/v2/search?category_filter=bars&radius_filter=" + @radius + 
-            "&location=" + @addresses.first 
+    search_data["category_filter"] = "bars"
   end
-  # sets up for API call:
-  consumer = OAuth::Consumer.new(consumer_key, consumer_secret, 
-            {:site => "http://api.yelp.com"})
-  access_token = OAuth::AccessToken.new(consumer, token, token_secret)
 
-  # API response:
-  response = JSON(access_token.get(path).body)
+  # Makes API call:
+  response = @client.search(search_data)
+
   # empty hash to store restaurant categories and info:
   session[:categories] = [].to_json
 
-  @categories = {}
   # stores info into the hash:
-  response['businesses'].each_index do |i|
-    if @categories[response['businesses'][i]['categories'][0][0]]
-      @categories[response['businesses'][i]['categories'][0][0]] << [response['businesses'][i]['name'], response['businesses'][i]['location']['display_address'].join(', ').gsub(/,/, '').gsub(/\s/, '+'), response['businesses'][i]['url']]
-    else
-      @categories[response['businesses'][i]['categories'][0][0]] = []
-      @categories[response['businesses'][i]['categories'][0][0]] << [response['businesses'][i]['name'], response['businesses'][i]['location']['display_address'].join(', ').gsub(/,/, '').gsub(/\s/, '+'), response['businesses'][i]['url']]
+  categories = {}
+  response.businesses.each_index do |i|
+    if categories[response.businesses[i].categories[0][0]]
+      categories[response.businesses[i].categories[0][0]] <<
+        [response.businesses[i].name, 
+        response.businesses[i].location.display_address.join(', ').gsub(/,/, '').gsub(/\s/, '+'), 
+        response.businesses[i].url]
+    else categories[response.businesses[i].categories[0][0]] = [] << 
+        [response.businesses[i].name, 
+        response.businesses[i].location.display_address.join(', ').gsub(/,/, '').gsub(/\s/, '+'), 
+        response.businesses[i].url]
     end
   end
 
-  # saves the hash as json in the session
-  cats = @categories.to_a.sample(2)
+  cats = categories.to_a.sample(2)
   session[:categories] = cats.to_json
 
   # selects 2 random keys for user to choose from:
