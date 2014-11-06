@@ -11,31 +11,24 @@ Dotenv.load
 set :sessions, true
 
 
-get '/' do
-  # has landing page button to start your experience
-  redirect to "/new"
-end
+# get '/' do
+#   # has landing page button to start your experience
+#   redirect to "/new"
+# end
 
-get '/new' do
-  # user inputs address
-  # user inputs mode of transportation from dropdown
-  # user inputs radius_filter from dropdown
-  
+get '/' do
+  # user inputs address, mode and radius
   # adds address and names to session as json: 
   session[:addresses] = [].to_json
-  session[:names] = ["Starting Point"].to_json
+  session[:names]     = ["Starting Point"].to_json
 
   erb :new
 end
 
 post'/create' do
-  # stores the user inputs from 'the_details' to use in API calls
-
-  # redirects to '/activity'
-
   # store the user inputs from params
-  new_address = params["address"].gsub(/,/, '').gsub(/\s/, '+')
-  session[:mode] = params["mode"]
+  new_address      = params["address"].gsub(/,/, '').gsub(/\s/, '+')
+  session[:mode]   = params["mode"]
   session[:radius] = params["radius"]
 
   # push inputs into array and convert back to json for session:
@@ -49,18 +42,17 @@ end
 
 get '/activity' do
   # serve user page with choice of "EAT", "DRINK" or "PLAY"
-  
   addresses = JSON.parse session[:addresses]
   names = JSON.parse session[:names]
 
   # adds another requirement for yelp API to session:
   if params['next'] == "Another!"
     addresses << params['venue_loc']
-    names << params['venue_name']
+    names     << params['venue_name']
   end
 
   session[:addresses] = addresses.to_json
-  session[:names] = names.to_json
+  session[:names]     = names.to_json
 
 
   erb :activity
@@ -77,7 +69,7 @@ get '/type' do
   @client = Yelpify.new_client(oauth_creds)
 
   # get the radius & address out of session 
-  @radius = session[:radius]
+  @radius    = session[:radius]
   @addresses = JSON.parse(session[:addresses])
 
   # set fixed search data
@@ -137,9 +129,9 @@ get '/result' do
 
   # saves result as variables to show in view:
   @category = params['category']
-  @name = result[0]
+  @name     = result[0]
   @location = result[1]
-  @url = result[2]
+  @url      = result[2]
 
   erb :result
 end
@@ -148,12 +140,12 @@ get '/map' do
 
   # grabs addresses and names from session:
   addresses = JSON.parse session[:addresses]
-  names = JSON.parse session[:names]
+  names     = JSON.parse session[:names]
 
   # adds new name/location to arrays:
   if params['next'] == "Route me!"
     addresses << params['venue_loc']
-    names << params['venue_name']
+    names     << params['venue_name']
   end
 
   # calls google API:
@@ -166,26 +158,25 @@ get '/map' do
 
 
   # parses response into directions:
-  legs = map_data["routes"].first["legs"]
+  legs       = map_data["routes"].first["legs"]
   directions = legs.map { |x| x["steps"].map { |y| y["html_instructions"] } }
-  places = names.take(directions.size+1)
+  places     = names.take(directions.size+1)
 
 
   # creates a map with all addresses:
+  base = ("https://www.google.com/maps/embed/v1/directions?key=" + 
+          ENV['GOOGLE_MAPS_KEY'] + "&origin=" + addresses.first + 
+          "&destination=" + addresses.last)
+  mode = ("&mode=" + session[:mode])  
+
   if addresses.length > 2
-    @map_src = ("https://www.google.com/maps/embed/v1/directions?key=" + 
-                ENV['GOOGLE_MAPS_KEY'] + "&origin=" + addresses.first + 
-                "&destination=" + addresses.last + "&waypoints=" + 
-                addresses[1..-2].join('|') + '&mode=' + session[:mode])
+    @map_src = (base + "&waypoints=" + addresses[1..-2].join('|') + mode)
   else
-    @map_src = ("https://www.google.com/maps/embed/v1/directions?key=" + 
-               ENV['GOOGLE_MAPS_KEY'] + "&origin=" + addresses.first + 
-                "&destination=" + addresses.last + '&mode=' + session[:mode])
+    @map_src = (base + mode)
   end
 
   # selects data needed for view:s
   @data = places.zip directions
   @data[-1][-1] = ["Final destination"]
-  # @last_name = @data.pop
   erb :map
 end
