@@ -8,8 +8,8 @@ require 'yelpify'
 
 set :bind, "0.0.0.0"
 Dotenv.load
-set :sessions, true
-
+# set :sessions, true
+enable :sessions  unless test?
 
 # get '/' do
 #   # has landing page button to start your experience
@@ -25,7 +25,7 @@ get '/' do
   erb :new
 end
 
-post'/create' do
+post '/create' do
   # store the user inputs from params
   new_address      = params["address"].gsub(/,/, '').gsub(/\s/, '+')
   session[:mode]   = params["mode"]

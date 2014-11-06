@@ -89,7 +89,7 @@ DEPENDENCIES
   pry-byebug
   rack-test
   rake
-  rspec (~> 2.14.1)
+  rspec
   shotgun
   sinatra (= 1.4.5)
   sinatra-bootstrap

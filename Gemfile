@@ -1,7 +1,6 @@
 source 'https://rubygems.org'
 ruby '2.0.0'
 
-gem 'rspec', '~> 2.14.1'
 gem 'pry-byebug'
 gem 'pg'
 gem 'rake'
@@ -15,7 +14,9 @@ gem 'dotenv'
 gem 'http'
 gem 'sinatra-bootstrap'
 
-
+group :test do
+  gem 'rspec'
+end
 
 group :test do
   gem 'rack-test'
