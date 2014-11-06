@@ -101,18 +101,21 @@ get '/type' do
   # empty hash to store restaurant categories and info:
   session[:categories] = [].to_json
 
+
   # stores info into the hash:
   categories = {}
   response.businesses.each_index do |i|
-    if categories[response.businesses[i].categories[0][0]]
-      categories[response.businesses[i].categories[0][0]] <<
-        [response.businesses[i].name, 
-        response.businesses[i].location.display_address.join(', ').gsub(/,/, '').gsub(/\s/, '+'), 
-        response.businesses[i].url]
-    else categories[response.businesses[i].categories[0][0]] = [] << 
-        [response.businesses[i].name, 
-        response.businesses[i].location.display_address.join(', ').gsub(/,/, '').gsub(/\s/, '+'), 
-        response.businesses[i].url]
+    business = response.businesses[i]
+    category = business.categories[0][0]
+    if categories[category]
+      categories[category] <<
+        [business.name,
+        business.location.display_address.join(', ').gsub(/,/, '').gsub(/\s/, '+'), 
+        business.url]
+    else categories[category] = [] << 
+        [business.name, 
+        business.location.display_address.join(', ').gsub(/,/, '').gsub(/\s/, '+'), 
+        business.url]
     end
   end
 
@@ -182,7 +185,7 @@ get '/map' do
 
   # selects data needed for view:s
   @data = places.zip directions
-  @data[-1][-1] = ["Final destination."]
+  @data[-1][-1] = ["Final destination"]
   # @last_name = @data.pop
   erb :map
 end
