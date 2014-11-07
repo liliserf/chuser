@@ -101,23 +101,37 @@ get '/type' do
   response.businesses.each_index do |i|
     business = response.businesses[i]
     category = business.categories[0][0]
-    if categories[category]
-      categories[category] <<
-        [business.name,
-        business.location.display_address.join(', ').gsub(/,/, '').gsub(/\s/, '+'), 
-        business.url]
-    else categories[category] = [] << 
-        [business.name, 
-        business.location.display_address.join(', ').gsub(/,/, '').gsub(/\s/, '+'), 
-        business.url]
-    end
+
+    categories[category] ||= []
+    categories[category] << {
+      :name => business.name,
+      :address => business.location.display_address.join(', ').gsub(/,/, '').gsub(/\s/, '+'), 
+      :url => business.url
+    }
+
+    # if categories[category]
+    #   categories[category] << {
+    #     :name => business.name,
+    #     :address => business.location.display_address.join(', ').gsub(/,/, '').gsub(/\s/, '+'), 
+    #     :url => business.url
+    #   }
+    # else categories[category] = [] << 
+    #     [business.name, 
+    #     business.location.display_address.join(', ').gsub(/,/, '').gsub(/\s/, '+'), 
+    #     business.url]
+    # end
   end
 
-  cats = categories.to_a.sample(2)
-  session[:categories] = cats.to_json
+  # cats = categories.to_a.sample(2)
+  # session[:categories] = cats.to_json
+
+  cat_names = categories.keys.sample(2)
+  selected_cats = categories.select {|k,v| cat_names.include?(k) }
+
+  session[:categories] = selected_cats.to_json
 
   # selects 2 random keys for user to choose from:
-  @choices = Hash[cats].keys
+  @choices = Hash[selected_cats].keys
 
   erb :types
 end
@@ -130,11 +144,10 @@ get '/result' do
   result = categories[params["category"]].sample
 
   # saves result as variables to show in view:
-  @category = params['category']
-  @name     = result[0]
-  @location = result[1]
-  @url      = result[2]
-
+  # @category = params['category']
+  @name     = result["name"]
+  @location = result["address"]
+  @url      = result["url"]
   erb :result
 end
 

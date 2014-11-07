@@ -1,0 +1,55 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: http://api.yelp.com/v2/search?category_filter=bars&location=9704%2Bsydney%2Bmarilyn%2Blane%2Baustin%2Btx%2B78748&radius_filter=1610
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - '*/*'
+      User-Agent:
+      - OAuth gem v0.4.7
+      Authorization:
+      - OAuth oauth_consumer_key="tZvWtLxlVeckvJ7ahrqEEA", oauth_nonce="lsUCMDBKiXmRcrPLNQrMHeOkohtuiLcv8HifNoPzk",
+        oauth_signature="ygXiJEwpAz8nptXb9vafpjhrcjQ%3D", oauth_signature_method="HMAC-SHA1",
+        oauth_timestamp="1415390687", oauth_token="Bp5pl8CzKJ8JICgGFLR3wPsuSB3wnlIX",
+        oauth_version="1.0"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Fri, 07 Nov 2014 20:04:44 GMT
+      Server:
+      - Apache
+      X-Node:
+      - web17-r3-sfo2, api_com
+      Cache-Control:
+      - private
+      Set-Cookie:
+      - bse=42e786a9976e3c1629882f8c8ca4e664; Domain=.yelp.com; Path=/; HttpOnly
+      - yuv=OhZe_kI880mY3iXN6DvaYuEh6iZbfEqsmxIL1B2ZvtksXm8qms4jdMmGwTS5TUt8u3Wvj-T1qFHjtlw7rr3DnZAdFhOR4sqZ;
+        Domain=.yelp.com; Max-Age=630720000; Path=/; expires=Thu, 02-Nov-2034 20:04:44
+        GMT
+      Content-Length:
+      - '4393'
+      Vary:
+      - User-Agent
+      Content-Type:
+      - application/json; charset=UTF-8
+      X-Mode:
+      - rw
+      X-Proxied:
+      - extlb1-r4-sfo2
+      - lb1
+    body:
+      encoding: UTF-8
+      string: '{"region":{"span":{"latitude_delta":0.013328573286493395,"longitude_delta":0.011974962550965529},"center":{"latitude":30.166477330418552,"longitude":-97.796965402649903}},"total":2,"businesses":[{"is_claimed":true,"rating":3.5,"mobile_url":"http://m.yelp.com/biz/little-woodrows-austin-3","rating_img_url":"http://s3-media1.fl.yelpcdn.com/assets/2/www/img/5ef3eb3cb162/ico/stars/v1/stars_3_half.png","review_count":93,"name":"Little Woodrow''s","snippet_image_url":"http://s3-media3.fl.yelpcdn.com/photo/u2FkrB4nag_em2Jkq3Fb_Q/ms.jpg","rating_img_url_small":"http://s3-media1.fl.yelpcdn.com/assets/2/www/img/2e909d5d3536/ico/stars/v1/stars_small_3_half.png","url":"http://www.yelp.com/biz/little-woodrows-austin-3","phone":"5122822336","snippet_text":"This place is awesome in the afternoons when the staff has         less going on. They are fun and friendly and the patio/outdoor area is just         fantastic! The only...","image_url":"http://s3-media1.fl.yelpcdn.com/bphoto/TAWOficuMZlqZf6Y7pUPzQ/ms.jpg","categories":[["Pubs","pubs"]],"display_phone":"+1-512-282-2336","rating_img_url_large":"http://s3-media3.fl.yelpcdn.com/assets/2/www/img/bd9b7a815d1b/ico/stars/v1/stars_large_3_half.png","id":"little-woodrows-austin-3","is_closed":false,"location":{"city":"Austin","display_address":["9500 S I H 35","Austin, TX 78748"],"geo_accuracy":9.5,"postal_code":"78748","country_code":"US","address":["9500 S I H         35"],"coordinate":{"latitude":30.166210475155204,"longitude":-97.793297969386018},"state_code":"TX"}},{"is_claimed":false,"rating":4.0,"mobile_url":"http://m.yelp.com/biz/toro-negro-lounge-austin","rating_img_url":"http://s3-media4.fl.yelpcdn.com/assets/2/www/img/c2f3dd9799a5/ico/stars/v1/stars_4.png","review_count":11,"name":"Toro Negro Lounge","snippet_image_url":"http://s3-media3.fl.yelpcdn.com/photo/u2FkrB4nag_em2Jkq3Fb_Q/ms.jpg","rating_img_url_small":"http://s3-media4.fl.yelpcdn.com/assets/2/www/img/f62a5be2f902/ico/stars/v1/stars_small_4.png","url":"http://www.yelp.com/biz/toro-negro-lounge-austin","phone":"5126329949","snippet_text":"This is a great bar! They always have good music and the         crowd is a happy, fun group every time I go. Drink prices are fair and the         service is outstanding,...","image_url":"http://s3-media1.fl.yelpcdn.com/bphoto/CKgS5uJ5Nrz74JmCwdfZzw/ms.jpg","categories":[["Lounges","lounges"]],"display_phone":"+1-512-632-9949","rating_img_url_large":"http://s3-media2.fl.yelpcdn.com/assets/2/www/img/ccf2b76faa2c/ico/stars/v1/stars_large_4.png","id":"toro-negro-lounge-austin","is_closed":false,"location":{"city":"Austin","display_address":["615 W Slaughter Ln","Ste 122","Austin, TX         78748"],"geo_accuracy":9.5,"postal_code":"78748","country_code":"US","address":["615 W Slaughter Ln","Ste 122"],"coordinate":{"latitude":30.172535772821501,"longitude":-97.802408567445795},"state_code":"TX"}}]}'
+    http_version: 
+  recorded_at: Fri, 07 Nov 2014 20:04:52 GMT
+recorded_with: VCR 2.9.3
