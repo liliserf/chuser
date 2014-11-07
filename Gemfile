@@ -13,6 +13,8 @@ gem 'unirest'
 gem 'dotenv'
 gem 'http'
 gem 'sinatra-bootstrap'
+gem 'vcr', '2.9.3'
+gem 'webmock', '1.20.2'
 
 group :test do
   gem 'rspec'

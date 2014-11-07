@@ -42,6 +42,8 @@ end
 
 get '/activity' do
   # serve user page with choice of "EAT", "DRINK" or "PLAY"
+  
+  # COMMENTED THIS OUT: IT MIGHT BREAK SOMETHING
   addresses = JSON.parse session[:addresses]
   names = JSON.parse session[:names]
 
