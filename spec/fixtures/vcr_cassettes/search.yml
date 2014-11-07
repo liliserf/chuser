@@ -1,0 +1,104 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: http://api.yelp.com/v2/search?category_filter=food,restaurants&limit=3&location=9704%2Bsydney%2Bmarilyn%2Blane%2Baustin%2Btx%2B78748&radius_filter=1610
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - '*/*'
+      User-Agent:
+      - OAuth gem v0.4.7
+      Authorization:
+      - OAuth oauth_consumer_key="tZvWtLxlVeckvJ7ahrqEEA", oauth_nonce="HMhVUJ2grQFGA2RUv2HNhHFGQJZkIbtXCRvovGqnYLk",
+        oauth_signature="D5fd%2B4ng9kpRYe9IDDyVldLaGko%3D", oauth_signature_method="HMAC-SHA1",
+        oauth_timestamp="1415374700", oauth_token="Bp5pl8CzKJ8JICgGFLR3wPsuSB3wnlIX",
+        oauth_version="1.0"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Fri, 07 Nov 2014 15:38:24 GMT
+      Server:
+      - Apache
+      X-Node:
+      - web1-r1-sfo2, api_com
+      Cache-Control:
+      - private
+      Set-Cookie:
+      - bse=a93cf585b46d11a171f5cffb0016da9e; Domain=.yelp.com; Path=/; HttpOnly
+      - yuv=ehnrTWtLS6kuJ-GYzzX4nSiuFclUcmiPrzoRCou_U1GXhQnGef28QEBCZhl8wvMHWPkGi4MdUNsRyWAqjwOAfxCXWIhJZc1z;
+        Domain=.yelp.com; Max-Age=630720000; Path=/; expires=Thu, 02-Nov-2034 15:38:24
+        GMT
+      Content-Length:
+      - '4517'
+      Vary:
+      - User-Agent
+      Content-Type:
+      - application/json; charset=UTF-8
+      X-Mode:
+      - rw
+      X-Proxied:
+      - extlb1-r4-sfo2
+      - lb1
+    body:
+      encoding: UTF-8
+      string: '{"region": {"span": {"latitude_delta": 0.0072995999999960759, "longitude_delta":
+        0.0014661802246109801}, "center": {"latitude": 30.162746900000002, "longitude":
+        -97.791003054443351}}, "total": 61, "businesses": [{"is_claimed": false, "rating":
+        4.5, "mobile_url": "http://m.yelp.com/biz/chick-fil-a-austin-8", "rating_img_url":
+        "http://s3-media2.fl.yelpcdn.com/assets/2/www/img/99493c12711e/ico/stars/v1/stars_4_half.png",
+        "review_count": 27, "name": "Chick-fil-a", "snippet_image_url": "http://s3-media1.fl.yelpcdn.com/photo/v75gdRxfy0J4AXjSbWebUQ/ms.jpg",
+        "rating_img_url_small": "http://s3-media2.fl.yelpcdn.com/assets/2/www/img/a5221e66bc70/ico/stars/v1/stars_small_4_half.png",
+        "url": "http://www.yelp.com/biz/chick-fil-a-austin-8", "menu_date_updated":
+        1387666048, "phone": "5122824200", "snippet_text": "The first thing I will
+        say is I support gay marriage/equal rights. However, chickfila chicken is
+        THE best chicken I''ve ever had. Not only is the chicken...", "image_url":
+        "http://s3-media3.fl.yelpcdn.com/bphoto/NND-FvG06Ayse6nmkt-G-A/ms.jpg", "categories":
+        [["Fast Food", "hotdogs"]], "display_phone": "+1-512-282-4200", "rating_img_url_large":
+        "http://s3-media4.fl.yelpcdn.com/assets/2/www/img/9f83790ff7f6/ico/stars/v1/stars_large_4_half.png",
+        "menu_provider": "single_platform", "id": "chick-fil-a-austin-8", "is_closed":
+        false, "location": {"city": "Austin", "display_address": ["161 West Slaughter
+        Ln", "Austin, TX 78748"], "geo_accuracy": 8.0, "postal_code": "78748", "country_code":
+        "US", "address": ["161 West Slaughter Ln"], "coordinate": {"latitude": 30.166181999999999,
+        "longitude": -97.791663999999997}, "state_code": "TX"}}, {"is_claimed": true,
+        "rating": 4.5, "mobile_url": "http://m.yelp.com/biz/teapioca-lounge-austin-2",
+        "rating_img_url": "http://s3-media2.fl.yelpcdn.com/assets/2/www/img/99493c12711e/ico/stars/v1/stars_4_half.png",
+        "review_count": 99, "name": "Teapioca Lounge", "snippet_image_url": "http://s3-media2.fl.yelpcdn.com/photo/tV0JGnccL4mlyTkqT9zIGA/ms.jpg",
+        "rating_img_url_small": "http://s3-media2.fl.yelpcdn.com/assets/2/www/img/a5221e66bc70/ico/stars/v1/stars_small_4_half.png",
+        "url": "http://www.yelp.com/biz/teapioca-lounge-austin-2", "phone": "5122152261",
+        "snippet_text": "Refreshing drinks! My favorite is honey dew with tapioca
+        and different flavored coffee.\nGreen tea is liked by only few.\n\nYou can
+        try with fruit and...", "image_url": "http://s3-media4.fl.yelpcdn.com/bphoto/CwzyUNTbA_arBdtG_o4wug/ms.jpg",
+        "categories": [["Coffee \u0026 Tea", "coffee"], ["Bubble Tea", "bubbletea"],
+        ["Juice Bars \u0026 Smoothies", "juicebars"]], "display_phone": "+1-512-215-2261",
+        "rating_img_url_large": "http://s3-media4.fl.yelpcdn.com/assets/2/www/img/9f83790ff7f6/ico/stars/v1/stars_large_4_half.png",
+        "id": "teapioca-lounge-austin-2", "is_closed": false, "location": {"city":
+        "Austin", "display_address": ["9600 S IH-35", "Ste B-300", "Austin, TX 78748"],
+        "geo_accuracy": 9.5, "postal_code": "78748", "country_code": "US", "address":
+        ["9600 S IH-35", "Ste B-300"], "coordinate": {"latitude": 30.161148689398001,
+        "longitude": -97.790336608886705}, "state_code": "TX"}}, {"is_claimed": true,
+        "rating": 4.5, "mobile_url": "http://m.yelp.com/biz/jasons-deli-austin-5",
+        "rating_img_url": "http://s3-media2.fl.yelpcdn.com/assets/2/www/img/99493c12711e/ico/stars/v1/stars_4_half.png",
+        "review_count": 54, "name": "Jason''s Deli", "snippet_image_url": "http://s3-media2.fl.yelpcdn.com/photo/8uAsKDwlWmZ1O4z_k8VV1w/ms.jpg",
+        "rating_img_url_small": "http://s3-media2.fl.yelpcdn.com/assets/2/www/img/a5221e66bc70/ico/stars/v1/stars_small_4_half.png",
+        "url": "http://www.yelp.com/biz/jasons-deli-austin-5", "phone": "5122800990",
+        "snippet_text": "I ate here and the thing that stuck out to me is how nice
+        everyone working there was, from the front to the bus boys everyone i encountered
+        or passed was in...", "image_url": "http://s3-media3.fl.yelpcdn.com/bphoto/aV-j099SMzfl59RIIkzrZg/ms.jpg",
+        "categories": [["Sandwiches", "sandwiches"], ["Delis", "delis"]], "display_phone":
+        "+1-512-280-0990", "rating_img_url_large": "http://s3-media4.fl.yelpcdn.com/assets/2/www/img/9f83790ff7f6/ico/stars/v1/stars_large_4_half.png",
+        "id": "jasons-deli-austin-5", "is_closed": false, "location": {"city": "Austin",
+        "display_address": ["9600 S I 35 Frontage Rd", "Austin, TX 78748"], "geo_accuracy":
+        8.0, "postal_code": "78748", "country_code": "US", "address": ["9600 S I 35
+        Frontage Rd"], "coordinate": {"latitude": 30.160549199999998, "longitude":
+        -97.790801999999999}, "state_code": "TX"}}]}'
+    http_version: 
+  recorded_at: Fri, 07 Nov 2014 15:38:25 GMT
+recorded_with: VCR 2.9.3
