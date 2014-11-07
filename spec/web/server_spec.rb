@@ -157,46 +157,23 @@ describe "Chuser App" do
         expect(last_response.body).to match(/Little Woodrow's/)
       end
     end
-
-    # it 'selects one item from values' do
-      # two_cats = {
-      #             "Sandwiches"=>
-      #               [
-      #                 ["Jason's Deli", 
-      #                 "9600+S+I+35+Frontage+Rd+Austin+TX+78748",
-      #                 "http://www.yelp.com/biz/jasons-deli-austin-5"
-      #                 ]
-      #               ],
-
-      #             "Fast Food"=>
-      #               [
-      #                 [
-      #                   "Chick-fil-a",
-      #                   "161+West+Slaughter+Ln+Austin+TX+78748",
-      #                   "http://www.yelp.com/biz/chick-fil-a-austin-8"
-      #                 ]
-      #               ]
-      #             }
-      # params = { "category" => "Sandwiches"}
-      # result = two_cats[params["category"]].sample
-      # expect(result[0]).to eq("Jason's Deli")
-      # expect(result[1]).to eq("9600+S+I+35+Frontage+Rd+Austin+TX+78748")
-      # expect(result[2]).to eq("http://www.yelp.com/biz/jasons-deli-austin-5")
-    # end
   end
 
   describe 'GET /map' do
-    xit "gets addresses from session" do
+    it "gets addresses from session" do
       session[:addresses] = ["9704+sydney+marilyn+lane+austin+tx+78748",
                              "9600+S+I+35+Frontage+Rd+Austin+TX+78748",
                              "161+West+Slaughter+Ln+Austin+TX+78748"].to_json 
       session[:names]     = ["Starting Point", 
                              "Jason's Deli", 
                              "Chick-fil-a"].to_json
-      addresses = JSON.parse session[:addresses]
-      names     = JSON.parse session[:names]
-      expect(JSON.parse(session[:names]).length).to eq(3)
-      expect(JSON.parse(session[:addresses]).length).to eq(3)
+      session[:mode]      = "walking"
+      VCR.use_cassette('get_maps') do
+        get '/map', {}, 'rack.session' => session
+        expect(last_response.body).to match(/Starting Point/)
+        expect(last_response.body).to match(/Jason's Deli/)
+        expect(last_response.body).to match(/Chick-fil-a/)
+      end
     end
 
     xit "adds name and address to session when 'Route me!'" do
