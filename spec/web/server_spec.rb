@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 
-describe "Chuser App" do
+describe "Chuser" do
 
   let(:session) { Hash.new }
 
@@ -70,13 +70,32 @@ describe "Chuser App" do
       expect(last_response.body).to include('form')
     end
 
-    it 'serves user EAT, DRINK and PLAY' do
+    it 'serves user options' do
       get '/', {}, 'rack.session' => session
       address = "9704 sydney marilyn lane, austin, tx 78748"
       post '/create', {"address" => address, "mode" => "walking", "radius" => "1610"}, 'rack.session' => session    
       get '/activity', {}, 'rack.session' => session      
       expect(last_response.body).to include('EAT', 'DRINK', 'PLAY')
     end
+
+    it 'can add name/location to session' do
+      get '/', {}, 'rack.session' => session
+      address = "9704 sydney marilyn lane, austin, tx 78748"
+      post '/create', {"address" => address, "mode" => "walking", "radius" => "1610"}, 'rack.session' => session    
+      get '/activity', {'next' => 'Another!', 'venue_loc' => "9500+S+I+H+35+Austin+TX+78748", 'venue_name' => "Little Woodrow's"}, 'rack.session' => session      
+      expect(session[:addresses]).to include("9500+S+I+H+35+Austin+TX+78748")
+      expect(session[:names]).to include("Little Woodrow's")
+    end
+
+    it 'does not add name/location to session when params is PASS' do
+      get '/', {}, 'rack.session' => session
+      address = "9704 sydney marilyn lane, austin, tx 78748"
+      post '/create', {"address" => address, "mode" => "walking", "radius" => "1610"}, 'rack.session' => session    
+      get '/activity', {'next' => 'PASS!', 'venue_loc' => "9500+S+I+H+35+Austin+TX+78748", 'venue_name' => "Little Woodrow's"}, 'rack.session' => session      
+      expect(session[:addresses]).not_to include("9500+S+I+H+35+Austin+TX+78748")
+      expect(session[:names]).not_to include("Little Woodrow's")
+    end   
+
   end
 
   it 'authorizes a new yelp client' do
@@ -168,35 +187,14 @@ describe "Chuser App" do
                              "Jason's Deli", 
                              "Chick-fil-a"].to_json
       session[:mode]      = "walking"
-      VCR.use_cassette('get_maps') do
-        get '/map', {}, 'rack.session' => session
+      VCR.use_cassette('get_map') do
+        get '/map', {'next' => "Route me!", 'venue_loc' => "9500+S+I+H+35+Austin+TX+78748", 'venue_name' => "Little Woodrow's"}, 'rack.session' => session
         expect(last_response.body).to match(/Starting Point/)
         expect(last_response.body).to match(/Jason's Deli/)
         expect(last_response.body).to match(/Chick-fil-a/)
+        expect(last_response.body).to match(/Little Woodrow's/)
       end
-    end
-
-    xit "adds name and address to session when 'Route me!'" do
-      session[:addresses] = ["9704+sydney+marilyn+lane+austin+tx+78748",
-                             "9600+S+I+35+Frontage+Rd+Austin+TX+78748",].to_json
-      session[:names]     = ["Starting Point", 
-                             "Jason's Deli",].to_json
-      params['venue_loc']  = {}
-      params['venue_name'] = {}
-      params['venue_loc']  = "161+West+Slaughter+Ln+Austin+TX+78748"
-      params['venue_name'] = "Chick-fil-a"
-      addresses = JSON.parse session[:addresses]
-      names     = JSON.parse session[:names] 
-      params = { 'next' => "Route me!" }
-
-      if params['next'] == "Route me!"
-        addresses << params['venue_loc']
-        names     << params['venue_name']
-      end
-
-      expect(addresses.length).to eq(3)
-      expect(names.length).to eq(3)
-    end
+    end 
   end
   
 end
