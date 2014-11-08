@@ -188,7 +188,7 @@ describe "Chuser" do
                              "Chick-fil-a"].to_json
       session[:mode]      = "walking"
       VCR.use_cassette('get_map') do
-        get '/map', {'next' => "Route me!", 'venue_loc' => "9500+S+I+H+35+Austin+TX+78748", 'venue_name' => "Little Woodrow's"}, 'rack.session' => session
+        get '/map', {'venue_loc' => "9500+S+I+H+35+Austin+TX+78748", 'venue_name' => "Little Woodrow's"}, 'rack.session' => session
         expect(last_response.body).to match(/Starting Point/)
         expect(last_response.body).to match(/Jason's Deli/)
         expect(last_response.body).to match(/Chick-fil-a/)

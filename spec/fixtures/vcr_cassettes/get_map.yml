@@ -21,9 +21,9 @@ http_interactions:
       Content-Type:
       - application/json; charset=UTF-8
       Date:
-      - Fri, 07 Nov 2014 23:56:57 GMT
+      - Sat, 08 Nov 2014 00:15:36 GMT
       Expires:
-      - Sat, 08 Nov 2014 23:56:57 GMT
+      - Sun, 09 Nov 2014 00:15:36 GMT
       Cache-Control:
       - public, max-age=86400
       Vary:
@@ -1015,5 +1015,5 @@ http_interactions:
         IF0sCiAgICAgICAgICJ3YXlwb2ludF9vcmRlciIgOiBbIDAsIDEgXQogICAg
         ICB9CiAgIF0sCiAgICJzdGF0dXMiIDogIk9LIgp9Cg==
     http_version: 
-  recorded_at: Fri, 07 Nov 2014 23:57:00 GMT
+  recorded_at: Sat, 08 Nov 2014 00:15:39 GMT
 recorded_with: VCR 2.9.3

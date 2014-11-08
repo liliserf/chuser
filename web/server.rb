@@ -158,10 +158,10 @@ get '/map' do
   names     = JSON.parse session[:names]
 
   # adds new name/location to arrays:
-  if params['next'] == "Route me!"
+  # if params['next'] == "Route me!"
     addresses << params['venue_loc']
     names     << params['venue_name']
-  end
+  # end
 
   # calls google API:
   new_url = URI.encode('https://maps.googleapis.com/maps/api/directions/json?origin=' +
