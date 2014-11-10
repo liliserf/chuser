@@ -1,14 +1,41 @@
-<div class="col-md-6 col-md-offset-3">
-	<div class="well well-lg">
-		<form role="form" action="/result" method="get">
-			<div class="form-group">
-				<input type="submit" class="btn btn-primary btn-lg btn-block" name="category" value="<%=@choices[0]%>">
-			</div>
-		</form>
-		<form role="form" action="/result" method="get">
-			<div class="form-group">
-				<input type="submit" class="btn btn-primary btn-lg btn-block" name="category" value="<%=@choices[1]%>">
-			</div>
-		</form>
+<% if @venue_names.count < 2 %>
+	<div class="col-md-6 col-md-offset-3">
+		<div class="well well-lg">
+			<form role="form" action="/result" method="get">
+				<div class="form-group">
+					<input type="submit" class="btn btn-primary btn-lg btn-block" name="category" value="<%=@choices[0]%>">
+				</div>
+			</form>
+			<form role="form" action="/result" method="get">
+				<div class="form-group">
+					<input type="submit" class="btn btn-primary btn-lg btn-block" name="category" value="<%=@choices[1]%>">
+				</div>
+			</form>
+		</div>
 	</div>
-</div>
+<% else %>
+	<div class="col-md-6">
+		<div class="well well-lg">
+			<form role="form" action="/result" method="get">
+				<div class="form-group">
+					<input type="submit" class="btn btn-primary btn-lg btn-block" name="category" value="<%=@choices[0]%>">
+				</div>
+			</form>
+			<form role="form" action="/result" method="get">
+				<div class="form-group">
+					<input type="submit" class="btn btn-primary btn-lg btn-block" name="category" value="<%=@choices[1]%>">
+				</div>
+			</form>
+		</div>
+	</div>
+	<div class="col-md-6">
+		<div class="well well-lg">
+			<ul class="selected-venues">
+				<h3>Activity List</h3>
+				<% @venue_names.each_index do |i| %>
+					<li class="result"><h4><a href="<%= @venue_urls[i+1] %>" target="_blank"><%= @venue_names[i+1] %></a></h4></li>				
+				<% end %> 
+			</ul>
+		</div>
+	</div>
+<% end %>

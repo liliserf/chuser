@@ -20,7 +20,8 @@ get '/' do
   # user inputs address, mode and radius
   # adds address and names to session as json: 
   session[:addresses] = [].to_json
-  session[:names]     = ["Starting Point"].to_json
+  session[:names]     = ["Home"].to_json
+  session[:urls]      = [""].to_json
 
   erb :new
 end
@@ -45,17 +46,22 @@ get '/activity' do
   
   # COMMENTED THIS OUT: IT MIGHT BREAK SOMETHING
   addresses = JSON.parse session[:addresses]
-  names = JSON.parse session[:names]
+  names     = JSON.parse session[:names]
+  urls      = JSON.parse session[:urls]
 
   # adds another requirement for yelp API to session:
   if params['next'] == "Another!"
     addresses << params['venue_loc']
     names     << params['venue_name']
+    urls      << params['venue_url']
   end
 
   session[:addresses] = addresses.to_json
   session[:names]     = names.to_json
+  session[:urls]      = urls.to_json
 
+  @venue_names = names
+  @venue_urls  = urls
 
   erb :activity
 end
@@ -108,22 +114,7 @@ get '/type' do
       :address => business.location.display_address.join(', ').gsub(/,/, '').gsub(/\s/, '+'), 
       :url => business.url
     }
-
-    # if categories[category]
-    #   categories[category] << {
-    #     :name => business.name,
-    #     :address => business.location.display_address.join(', ').gsub(/,/, '').gsub(/\s/, '+'), 
-    #     :url => business.url
-    #   }
-    # else categories[category] = [] << 
-    #     [business.name, 
-    #     business.location.display_address.join(', ').gsub(/,/, '').gsub(/\s/, '+'), 
-    #     business.url]
-    # end
   end
-
-  # cats = categories.to_a.sample(2)
-  # session[:categories] = cats.to_json
 
   cat_names = categories.keys.sample(2)
   selected_cats = categories.select {|k,v| cat_names.include?(k) }
@@ -132,6 +123,11 @@ get '/type' do
 
   # selects 2 random keys for user to choose from:
   @choices = Hash[selected_cats].keys
+
+  names = JSON.parse session[:names]
+  urls  = JSON.parse session[:urls]
+  @venue_names = names
+  @venue_urls  = urls
 
   erb :types
 end
@@ -148,6 +144,12 @@ get '/result' do
   @name     = result["name"]
   @location = result["address"]
   @url      = result["url"]
+
+  names = JSON.parse session[:names]
+  urls  = JSON.parse session[:urls]
+  @venue_names = names
+  @venue_urls  = urls
+
   erb :result
 end
 
