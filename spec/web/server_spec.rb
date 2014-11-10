@@ -18,7 +18,7 @@ describe "Chuser" do
 
     it "sets session[:name]" do
       get '/', {}, 'rack.session' => session
-      expect(JSON.parse(session[:names])).to include("Starting Point")
+      expect(JSON.parse(session[:names])).to include("Home")
     end
 
     it "sets session[:addresses] to []" do
