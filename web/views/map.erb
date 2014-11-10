@@ -4,7 +4,7 @@
 			<h2>Directions</h2>
 			<ul>
 				<% @data.each do |place| %>
-					<h4 class="toggle"> <span class="glyphicon glyphicon-plus"></span><%= " #{place.first}" %></h4>
+					<h4 class="toggle"><span class="glyphicon glyphicon-plus"></span><%= " #{place.first}" %></h4>
 					<div>
 					<% place.last.each do |step| %>
 						<li><%= step %></li>

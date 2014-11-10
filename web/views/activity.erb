@@ -24,6 +24,16 @@
 <% else %>
 	<div class="col-md-6">
 		<div class="well well-lg">
+			<ul class="selected-venues">
+				<h3>Activity List</h3>
+				<% @venue_names.each_index do |i| %>
+					<li class="result"><h4><a href="<%= @venue_urls[i+1] %>" target="_blank"><%= @venue_names[i+1] %></a></h4></li>				
+				<% end %> 
+			</ul>
+		</div>
+	</div>
+	<div class="col-md-6">
+		<div class="well well-lg">
 			<form role="form" action="/type" method="get">
 				<div class="form-group">
 					<input type="submit" name="activity" class="btn btn-primary btn-lg btn-block" value="EAT">
@@ -39,16 +49,6 @@
 					<input type="submit" name="activity" class="btn btn-primary btn-lg btn-block" value="DRINK">
 				</div>
 			</form>
-		</div>
-	</div>
-	<div class="col-md-6">
-		<div class="well well-lg">
-			<ul class="selected-venues">
-				<h3>Activity List</h3>
-				<% @venue_names.each_index do |i| %>
-					<li class="result"><h4><a href="<%= @venue_urls[i+1] %>" target="_blank"><%= @venue_names[i+1] %></a></h4></li>				
-				<% end %> 
-			</ul>
 		</div>
 	</div>
 <% end %>

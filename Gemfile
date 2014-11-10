@@ -7,7 +7,7 @@ gem 'rake'
 gem 'sinatra', '1.4.5'
 gem 'sinatra-contrib', :require => ['sinatra/reloader', 'sinatra/content_for']
 gem 'shotgun'
-gem 'yelpify', :path => '/home/vagrant/code/mks/yelpify'
+gem 'yelpify', '~> 0.0.2'
 gem 'oauth'
 gem 'unirest'
 gem 'dotenv'

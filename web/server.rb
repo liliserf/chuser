@@ -74,7 +74,7 @@ get '/type' do
     token:           ENV['YELP_TOKEN'],
     token_secret:    ENV['YELP_TOKEN_SECRET']
   }
-  @client = Yelpify.new_client(oauth_creds)
+  @client = Yelpify.create_new(oauth_creds)
 
   # get the radius & address out of session 
   @radius    = session[:radius]

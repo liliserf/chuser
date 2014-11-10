@@ -3,7 +3,8 @@
     <form class="start" role="form" method="post" action="/create">
       <div class="form-group">
         <label for="address">Where are you right now?:</label>
-        <input type="text" id="address" name="address" class="error">
+        <input type="text" id="address" name="address" class="error" label="address"><span class="geolocate glyphicon glyphicon-map-marker lg"></span>
+        <div id="out"></div>
         <small class="error address text-danger" style="display: none"><br>Please enter a valid address.</small> 
       </div>
       <div class="form-group">
