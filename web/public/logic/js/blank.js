@@ -5,10 +5,9 @@ $(document).ready(function(){
 		console.log("geolocation IS NOT available")
 	}
 
-	$('.geolocate').on('click', function(e) {
+	$('.geo').on('click', function(e) {
 		var output = document.getElementById("out");
 		e.preventDefault();
-
 		if (!navigator.geolocation){
 			output.innerHTML = "<p>Geolocation is not supported by your browser. Please input your address below.</p>";
 			return;
@@ -35,6 +34,7 @@ $(document).ready(function(){
 
 	function initialize() {
 		geocoder = new google.maps.Geocoder();
+
 	}
 
 	function codeLatLng(lat, lng, latlng) {
