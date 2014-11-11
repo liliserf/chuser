@@ -33,16 +33,6 @@
 <% else %>
 	<div class="col-md-6">
 		<div class="well well-lg">
-			<ul class="selected-venues">
-				<h3>Activity List</h3>
-				<% @venue_names.each_index do |i| %>
-					<li class="result"><h4><a href="<%= @venue_urls[i+1] %>" target="_blank"><%= @venue_names[i+1] %></a></h4></li>
-				<% end %> 
-			</ul>
-		</div>
-	</div>
-	<div class="col-md-6">
-		<div class="well well-lg">
 			<div class="text-center"> 
 				<h2 class="result"><a href="<%= @url %>" target="_blank"><%= @name %></a></h2>
 			</div>
@@ -55,13 +45,11 @@
 					<input type="submit" name="next" class="btn btn-primary btn-lg btn-block" value="Another!">
 				</div>
 			</form>
-
 			<form role="form" action="/activity" method="get">
 				<div class="form-group">
 					<input type="submit" name="next" class="btn btn-danger btn-lg btn-block" value="PASS!">
 				</div>
 			</form>
-
 			<form role="form" action="/map" method="get">
 				<div class="form-group">
 					<input type="hidden" name="venue_name" class="button" value="<%= @name %>">
@@ -70,6 +58,16 @@
 					<input type="submit" name="next" class="btn btn-primary btn-lg btn-block" value="Route me!">
 				</div>
 			</form>
+		</div>
+	</div>
+	<div class="col-md-6">
+		<div class="well well-lg">
+			<ul class="selected-venues">
+				<h3>Activity List</h3>
+				<% @venue_names.each_index do |i| %>
+					<li class="result"><h4><a href="<%= @venue_urls[i+1] %>" target="_blank"><%= @venue_names[i+1] %></a></h4></li>
+				<% end %> 
+			</ul>
 		</div>
 	</div>
 <% end %>
