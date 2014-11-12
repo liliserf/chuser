@@ -46,7 +46,8 @@
 					<input type="hidden" name="venue_name" value="<%= @name %>">
 					<input type="hidden" name="venue_loc" value="<%= @location %>">
 					<input type="hidden" name="venue_url" value="<%= @url %>">
-					<input type="submit" name="next" class="btn btn-primary btn-lg btn-block" value="Another!">
+					<input type="hidden" name="next" value="Another!">
+					<button class="btn btn-primary btn-lg btn-block">Yes! Let's add another!</button>
 				</div>
 			</form>
 			<form role="form" action="/activity" method="get">
@@ -59,7 +60,8 @@
 					<input type="hidden" name="venue_name" class="button" value="<%= @name %>">
 					<input type="hidden" name="venue_loc" value="<%= @location %>">
 					<input type="hidden" name="venue_url" value="<%= @url %>">
-					<input type="submit" name="next" class="btn btn-primary btn-lg btn-block" value="Route me!">
+					<input type="hidden" name="next" value="Route me!">
+					<button class="btn btn-primary btn-lg btn-block">Yes! Route me!</button>
 				</div>
 			</form>
 		</div>
