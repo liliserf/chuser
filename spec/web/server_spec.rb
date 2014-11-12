@@ -105,7 +105,7 @@ describe "Chuser" do
       token:           ENV['YELP_TOKEN'],
       token_secret:    ENV['YELP_TOKEN_SECRET']
     }
-    client = Yelpify.new_client(oauth_creds)
+    client = Yelpify.create_new(oauth_creds)
     expect(client.access_token).to_not be_nil
   end
 
@@ -118,7 +118,7 @@ describe "Chuser" do
         token:           ENV['YELP_TOKEN'],
         token_secret:    ENV['YELP_TOKEN_SECRET']
       }
-      @client = Yelpify.new_client(oauth_creds)
+      @client = Yelpify.create_new(oauth_creds)
     end
 
     it 'creates an API call' do
@@ -162,7 +162,7 @@ describe "Chuser" do
         token:           ENV['YELP_TOKEN'],
         token_secret:    ENV['YELP_TOKEN_SECRET']
       }
-      @client = Yelpify.new_client(oauth_creds)
+      @client = Yelpify.create_new(oauth_creds)
     end
 
     it 'gives user a result' do
