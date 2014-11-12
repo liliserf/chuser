@@ -1,6 +1,7 @@
 <% if @venue_names.count < 2 %>
 	<div class="col-md-6 col-md-offset-3">
 		<div class="well well-lg">
+		<p>Which of these two do you prefer?</p>
 			<form role="form" action="/result" method="get">
 				<div class="form-group">
 					<input type="submit" class="btn btn-primary btn-lg btn-block" name="category" value="<%=@choices[0]%>">
@@ -16,6 +17,7 @@
 <% else %>
 	<div class="col-md-6">
 		<div class="well well-lg">
+		<p>Which of these two do you prefer?</p>
 			<form role="form" action="/result" method="get">
 				<div class="form-group">
 					<input type="submit" class="btn btn-primary btn-lg btn-block" name="category" value="<%=@choices[0]%>">
