@@ -178,7 +178,7 @@ describe "Chuser" do
     end
   end
 
-  describe 'GET /map' do
+  describe 'POST /map' do
     it "gets addresses from session" do
       session[:addresses] = ["9704+sydney+marilyn+lane+austin+tx+78748",
                              "9600+S+I+35+Frontage+Rd+Austin+TX+78748",
@@ -188,7 +188,7 @@ describe "Chuser" do
                              "Chick-fil-a"].to_json
       session[:mode]      = "walking"
       VCR.use_cassette('get_map') do
-        get '/map', {'venue_loc' => "9500+S+I+H+35+Austin+TX+78748", 'venue_name' => "Little Woodrow's"}, 'rack.session' => session
+        post '/map', {'venue_loc' => "9500+S+I+H+35+Austin+TX+78748", 'venue_name' => "Little Woodrow's"}, 'rack.session' => session
         expect(last_response.body).to match(/Starting Point/)
         expect(last_response.body).to match(/Jason's Deli/)
         expect(last_response.body).to match(/Chick-fil-a/)

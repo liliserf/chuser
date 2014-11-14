@@ -153,7 +153,7 @@ get '/result' do
   erb :result
 end
 
-get '/map' do
+post '/map' do
 
   # grabs addresses and names from session:
   addresses = JSON.parse session[:addresses]
