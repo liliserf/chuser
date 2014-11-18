@@ -82,7 +82,7 @@ describe "Chuser" do
       get '/', {}, 'rack.session' => session
       address = "9704 sydney marilyn lane, austin, tx 78748"
       post '/create', {"address" => address, "mode" => "walking", "radius" => "1610"}, 'rack.session' => session    
-      get '/activity', {'next' => 'Another!', 'venue_loc' => "9500+S+I+H+35+Austin+TX+78748", 'venue_name' => "Little Woodrow's"}, 'rack.session' => session      
+      get '/activity', {'next' => 'another', 'venue_loc' => "9500+S+I+H+35+Austin+TX+78748", 'venue_name' => "Little Woodrow's"}, 'rack.session' => session      
       expect(session[:addresses]).to include("9500+S+I+H+35+Austin+TX+78748")
       expect(session[:names]).to include("Little Woodrow's")
     end
@@ -91,7 +91,7 @@ describe "Chuser" do
       get '/', {}, 'rack.session' => session
       address = "9704 sydney marilyn lane, austin, tx 78748"
       post '/create', {"address" => address, "mode" => "walking", "radius" => "1610"}, 'rack.session' => session    
-      get '/activity', {'next' => 'PASS!', 'venue_loc' => "9500+S+I+H+35+Austin+TX+78748", 'venue_name' => "Little Woodrow's"}, 'rack.session' => session      
+      get '/activity', {'next' => 'pass', 'venue_loc' => "9500+S+I+H+35+Austin+TX+78748", 'venue_name' => "Little Woodrow's"}, 'rack.session' => session      
       expect(session[:addresses]).not_to include("9500+S+I+H+35+Austin+TX+78748")
       expect(session[:names]).not_to include("Little Woodrow's")
     end   

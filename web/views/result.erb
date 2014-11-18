@@ -11,7 +11,7 @@
 					<input type="hidden" name="venue_name" value="<%= @name %>">
 					<input type="hidden" name="venue_loc" value="<%= @location %>">
 					<input type="hidden" name="venue_url" value="<%= @url %>">
-					<input type="hidden" name="next" value="Another!">
+					<input type="hidden" name="next" value="another">
 					<button class="btn btn-primary btn-lg btn-block">Yes! Let's add another!</button>
 				</div>
 			</form>
@@ -27,7 +27,7 @@
 					<input type="hidden" name="venue_name" class="button" value="<%= @name %>">
 					<input type="hidden" name="venue_loc" value="<%= @location %>">
 					<input type="hidden" name="venue_url" value="<%= @url %>">
-					<input type="hidden" name="next" value="Route me!">
+					<input type="hidden" name="next" value="route">
 					<button class="btn btn-primary btn-lg btn-block">Yes! Route me!</button>
 				</div>
 			</form>
@@ -46,13 +46,15 @@
 					<input type="hidden" name="venue_name" value="<%= @name %>">
 					<input type="hidden" name="venue_loc" value="<%= @location %>">
 					<input type="hidden" name="venue_url" value="<%= @url %>">
-					<input type="hidden" name="next" value="Another!">
+					<input type="hidden" name="next" value="another">
 					<button class="btn btn-primary btn-lg btn-block">Yes! Let's add another!</button>
 				</div>
 			</form>
 			<form role="form" action="/activity" method="get">
 				<div class="form-group">
-					<input type="submit" name="next" class="btn btn-danger btn-lg btn-block" value="PASS!">
+					<input type="hidden" name="next" value="pass">
+					<button class="btn btn-danger btn-lg btn-block">PASS!</button>
+
 				</div>
 			</form>
 			<form role="form" action="/map" method="post">
@@ -60,7 +62,7 @@
 					<input type="hidden" name="venue_name" class="button" value="<%= @name %>">
 					<input type="hidden" name="venue_loc" value="<%= @location %>">
 					<input type="hidden" name="venue_url" value="<%= @url %>">
-					<input type="hidden" name="next" value="Route me!">
+					<input type="hidden" name="next" value="route">
 					<button class="btn btn-primary btn-lg btn-block">Yes! Route me!</button>
 				</div>
 			</form>

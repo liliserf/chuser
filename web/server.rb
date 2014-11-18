@@ -50,7 +50,7 @@ get '/activity' do
   urls      = JSON.parse session[:urls]
 
   # adds another requirement for yelp API to session:
-  if params['next'] == "Another!"
+  if params['next'] == "another"
     addresses << params['venue_loc']
     names     << params['venue_name']
     urls      << params['venue_url']
